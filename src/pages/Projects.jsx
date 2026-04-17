@@ -23,7 +23,7 @@ const projects = [
     description:
       "Full-stack productivity app built with React, Express, and Postgres, supporting 14 concurrent users across 200+ focused work sessions. Features an AI productivity coach via GPT-4o, deployed with CI/CD on Vercel.",
     github: "https://github.com/Hieuuum/the-anvil",
-    demo: null,
+    demo: "https://the-anvil.vercel.app/",
     tags: ["React", "Express", "PostgreSQL", "GPT-4o"],
   },
 ];
