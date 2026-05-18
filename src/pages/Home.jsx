@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllPosts } from "../lib/posts";
 
+const aboutLinks = [
+  { label: "Email", href: "mailto:hieu.vm.nguyen@gmail.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/mhieuuu/", external: true },
+  { label: "Substack", href: "https://substack.com/@mhieuuu/posts", external: true },
+  { label: "Resume", href: "/resume.pdf", external: true },
+  { label: "CV", href: "/cv.pdf", external: true },
+  { label: "GitHub", href: "https://github.com/Hieuuum", external: true },
+];
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
@@ -16,14 +25,14 @@ export default function Home() {
         <div className="grid md:grid-cols-[1fr_auto] gap-10 md:gap-12 items-start">
           <div>
             <h1 className="mb-8">
-              <span className="block text-base text-slate-400 mb-1">
+              <span className="block text-base text-slate-400 dark:text-zinc-500 mb-1">
                 Hi, I&apos;m
               </span>
-              <span className="text-5xl sm:text-6xl font-semibold text-slate-900">
+              <span className="text-5xl sm:text-6xl font-semibold text-slate-900 dark:text-zinc-100">
                 Hieu
               </span>
             </h1>
-            <div className="space-y-4 text-slate-600 leading-relaxed">
+            <div className="space-y-4 text-slate-600 dark:text-zinc-400 leading-relaxed">
               <p>
                 Undergraduate at Union College studying Computer Science and
                 Mathematics. I&apos;m interested in AI safety, making current AI
@@ -35,16 +44,33 @@ export default function Home() {
             <div className="flex gap-4 mt-8">
               <Link
                 to="/projects"
-                className="px-5 py-2.5 bg-slate-900 text-white text-sm rounded-md hover:bg-slate-700 transition-colors"
+                className="px-5 py-2.5 bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-sm rounded-md hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors"
               >
                 View projects
               </Link>
               <Link
                 to="/contact"
-                className="px-5 py-2.5 border border-slate-200 text-slate-700 text-sm rounded-md hover:border-slate-400 transition-colors"
+                className="px-5 py-2.5 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 text-sm rounded-md hover:border-slate-400 dark:hover:border-zinc-500 transition-colors"
               >
                 Get in touch
               </Link>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500 dark:text-zinc-400">
+              {aboutLinks.map((link, i) => (
+                <span key={link.label} className="flex items-center gap-x-3">
+                  {i > 0 && <span className="text-slate-300 dark:text-zinc-600">·</span>}
+                  <a
+                    href={link.href}
+                    {...(link.external && {
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    })}
+                    className="hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </span>
+              ))}
             </div>
           </div>
           <div
@@ -62,14 +88,14 @@ export default function Home() {
 
       {/* Recent posts */}
       {posts.length > 0 && (
-        <section className="max-w-3xl mx-auto px-6 py-16 border-t border-slate-100">
+        <section className="max-w-3xl mx-auto px-6 py-16 border-t border-slate-100 dark:border-zinc-800">
           <div className="flex items-baseline justify-between mb-8">
-            <h2 className="text-xs text-slate-400 tracking-widest uppercase">
+            <h2 className="text-xs text-slate-400 dark:text-zinc-500 tracking-widest uppercase">
               Recent Writing
             </h2>
             <Link
               to="/blog"
-              className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
             >
               All posts →
             </Link>
@@ -79,15 +105,15 @@ export default function Home() {
               <li key={post.slug}>
                 <Link to={`/blog/${post.slug}`} className="group block">
                   <div className="flex items-baseline justify-between gap-4">
-                    <span className="text-slate-900 group-hover:text-slate-600 transition-colors">
+                    <span className="text-slate-900 dark:text-zinc-100 group-hover:text-slate-600 dark:group-hover:text-zinc-400 transition-colors">
                       {post.data.title}
                     </span>
-                    <span className="text-sm text-slate-400 shrink-0">
+                    <span className="text-sm text-slate-400 dark:text-zinc-500 shrink-0">
                       {post.data.date}
                     </span>
                   </div>
                   {post.data.excerpt && (
-                    <p className="text-sm text-slate-500 mt-1">
+                    <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">
                       {post.data.excerpt}
                     </p>
                   )}

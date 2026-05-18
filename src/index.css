@@ -8,6 +8,6 @@
   }
 
   body {
-    @apply bg-white text-slate-900 antialiased;
+    @apply bg-white text-slate-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
   }
 }
