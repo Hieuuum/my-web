@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with Research"
-date: "2026-04-10"
+date: "2026-01-10"
 excerpt: "Some thoughts on how I approach a new research problem — from reading papers to running first experiments."
 ---
 
