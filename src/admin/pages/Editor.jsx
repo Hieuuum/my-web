@@ -49,6 +49,26 @@ const TOOLBAR_ACTIONS = [
   { label: "Link", template: (sel) => `[${sel || "text"}](url)` },
 ];
 
+// Insert `text` replacing [start, end] in the textarea via execCommand, which
+// keeps the browser's native undo stack (Ctrl+Z) intact — writing through
+// React state would wipe it. React state syncs via the input event execCommand
+// fires. Falls back to a state splice when execCommand fails (e.g. textarea
+// hidden in Preview mode), losing undo for that one insertion only.
+function insertTextUndoable(textarea, text, start, end, onChange) {
+  textarea.focus();
+  textarea.setSelectionRange(start, end);
+  let ok = false;
+  try {
+    ok = document.execCommand("insertText", false, text);
+  } catch {
+    ok = false;
+  }
+  if (!ok) {
+    const { value } = textarea;
+    onChange(value.slice(0, start) + text + value.slice(end));
+  }
+}
+
 function applyToolbar(action, textarea, onChange) {
   const { selectionStart: start, selectionEnd: end, value } = textarea;
   const sel = value.slice(start, end);
@@ -67,8 +87,7 @@ function applyToolbar(action, textarea, onChange) {
     cursorOffset = sel ? insertion.length : open.length + (action.placeholder?.length || 0);
   }
 
-  const newVal = value.slice(0, start) + insertion + value.slice(end);
-  onChange(newVal);
+  insertTextUndoable(textarea, insertion, start, end, onChange);
 
   requestAnimationFrame(() => {
     textarea.focus();
@@ -351,7 +370,7 @@ export default function Editor() {
     if (!ta) return;
     const start = ta.selectionStart;
     const end = ta.selectionEnd;
-    setContent((prev) => prev.slice(0, start) + text + prev.slice(end));
+    insertTextUndoable(ta, text, start, end, setContent);
     requestAnimationFrame(() => {
       ta.focus();
       const pos = start + text.length;
