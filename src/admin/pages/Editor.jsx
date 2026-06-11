@@ -419,12 +419,22 @@ export default function Editor() {
   }
 
   // ── textarea auto-grow ───────────────────────────────────────────────────
+  // Runs on load, restore, view switch, and every content change. Collapsing
+  // to "auto" momentarily shrinks the document, which yanks the page scroll
+  // to the top — save and restore the scroll position around the measurement.
 
-  function handleContentChange(e) {
-    const ta = e.target;
-    setContent(ta.value);
+  useEffect(() => {
+    if (!loaded) return;
+    const ta = textareaRef.current;
+    if (!ta || ta.offsetParent === null) return; // hidden in Preview mode
+    const { scrollX, scrollY } = window;
     ta.style.height = "auto";
     ta.style.height = ta.scrollHeight + "px";
+    window.scrollTo(scrollX, scrollY);
+  }, [content, view, loaded]);
+
+  function handleContentChange(e) {
+    setContent(e.target.value);
   }
 
   // ── slug input handling ──────────────────────────────────────────────────
