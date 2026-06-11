@@ -135,6 +135,7 @@ export default function Editor() {
   const [error, setError] = useState("");
 
   const textareaRef = useRef(null);
+  const titleRef = useRef(null);
   const autosaveTimer = useRef(null);
 
   // track if dirty (unsaved changes after last server save)
@@ -442,6 +443,15 @@ export default function Editor() {
     }
   }, [content, view, loaded]);
 
+  // Same grow-only sizing for the wrapping title textarea.
+  useLayoutEffect(() => {
+    const el = titleRef.current;
+    if (!el || el.offsetParent === null) return;
+    if (el.scrollHeight > el.clientHeight) {
+      el.style.height = el.scrollHeight + "px";
+    }
+  }, [title, loaded]);
+
   useEffect(() => {
     const id = setTimeout(() => setPreviewContent(content), 150);
     return () => clearTimeout(id);
@@ -492,13 +502,18 @@ export default function Editor() {
         </div>
       )}
 
-      {/* Title */}
-      <input
-        type="text"
+      {/* Title — wraps onto multiple lines; literal newlines are blocked
+          because the title is written into YAML frontmatter on save */}
+      <textarea
+        ref={titleRef}
+        rows={1}
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value.replace(/\n/g, ""))}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
         placeholder="Title"
-        className="w-full text-3xl font-semibold text-slate-900 dark:text-zinc-100 border-none outline-none placeholder-slate-300 dark:placeholder-zinc-700 mb-1 bg-transparent"
+        className="w-full text-3xl font-semibold text-slate-900 dark:text-zinc-100 border-none outline-none resize-none overflow-hidden placeholder-slate-300 dark:placeholder-zinc-700 mb-1 bg-transparent [field-sizing:content]"
       />
 
       {/* Slug (new post only until first save) */}

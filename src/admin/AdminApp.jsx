@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import { api, ApiError } from "./api";
+import ThemeToggle from "../components/ThemeToggle";
 import Login from "./pages/Login";
 import PostList from "./pages/PostList";
 import Editor from "./pages/Editor";
@@ -21,9 +22,10 @@ function AdminHeader() {
       <Link to="/admin/posts" className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
         Posts
       </Link>
+      <ThemeToggle className="ml-auto" />
       <button
         onClick={handleLogout}
-        className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors ml-auto"
+        className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors"
       >
         Log out
       </button>

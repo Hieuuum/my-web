@@ -5,6 +5,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  /* Match browser-drawn UI (scrollbars, date pickers) to the active theme —
+     otherwise dark mode shows a light scrollbar strip along the page edge. */
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
