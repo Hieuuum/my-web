@@ -470,7 +470,7 @@ export default function Editor() {
   if (!loaded) return null;
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
+    <div className={`${view === "split" ? "max-w-5xl" : "max-w-3xl"} mx-auto px-6 py-10`}>
       {/* Restore banner */}
       {restoreBanner && (
         <div className="mb-6 flex items-center gap-4 border border-slate-200 dark:border-zinc-700 rounded px-4 py-3">
