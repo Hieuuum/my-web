@@ -6,10 +6,10 @@ excerpt: "Measuring which reasoning steps matter usually takes 20 model completi
 
 ## TL;DR
 
-- **The problem:** Measuring which chain-of-thought sentences are "load-bearing" (a metric called *thought resilience*) needs ~20 model completions per sentence — too slow to use live.
-- **The idea:** Test whether resilience is already encoded in the model's activations, so a single forward pass + a linear probe could replace the 20 completions — a 20× speedup.
+- **The problem:** Measuring which chain-of-thought sentences are likely to appear (a metric called *thought resilience*) needs at least 20 model completions per sentence, which is to expensive.
+- **The idea:** Test whether resilience is already encoded in the model's activations, so a single forward pass through a linear probe could replace the 20 completions, massively speeding up the process.
 - **The result:** On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
-- **The interesting part:** Accuracy is *worst* at the input layer and rises toward the middle of the network — a hint (not proof) that the probe reads something the model computes, not just surface words.
+- **The interesting part:** Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for surface word patterns.
 - **The honest caveats:** I never ran a bag-of-words baseline to rule out surface features, and I probed *resilience* (how stubborn a thought is) when *counterfactual importance* (how much it drives the answer) is the more useful signal.
 - **Next step:** Steer the model along the learned resilience direction and see if its reasoning changes — the test of whether the direction is causal, not just correlated.
 
