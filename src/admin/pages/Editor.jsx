@@ -98,7 +98,7 @@ export default function Editor() {
   const [sha, setSha] = useState(() => location.state?.sha ?? null);
 
   // UI state
-  const [view, setView] = useState("write"); // "write" | "preview"
+  const [view, setView] = useState("write"); // "write" | "preview" | "split"
   const [status, setStatus] = useState(""); // status bar text
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -518,8 +518,8 @@ export default function Editor() {
           </button>
         </div>
 
-        {/* Write / Preview toggle */}
-        <div className="flex items-center gap-2 ml-auto xl:hidden">
+        {/* Write / Preview / Split toggle */}
+        <div className="flex items-center gap-2 ml-auto">
           <button
             type="button"
             onClick={() => setView("write")}
@@ -535,13 +535,21 @@ export default function Editor() {
           >
             Preview
           </button>
+          <span className="text-slate-200 dark:text-zinc-700">|</span>
+          <button
+            type="button"
+            onClick={() => setView("split")}
+            className={`text-xs transition-colors ${view === "split" ? "text-slate-900 dark:text-zinc-100" : "text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400"}`}
+          >
+            Split
+          </button>
         </div>
       </div>
 
       {/* Editor area */}
-      <div className="xl:grid xl:grid-cols-2 xl:gap-8">
+      <div className={view === "split" ? "xl:grid xl:grid-cols-2 xl:gap-8" : ""}>
         {/* Textarea */}
-        <div className={view === "preview" ? "hidden xl:block" : ""}>
+        <div className={view === "preview" ? "hidden" : ""}>
           <textarea
             ref={textareaRef}
             value={content}
@@ -556,7 +564,15 @@ export default function Editor() {
         </div>
 
         {/* Preview */}
-        <div className={`${view === "write" ? "hidden xl:block" : ""} border-l border-slate-100 dark:border-zinc-800 xl:pl-8`}>
+        <div
+          className={
+            view === "write"
+              ? "hidden"
+              : view === "split"
+                ? "mt-6 pt-6 border-t xl:mt-0 xl:pt-0 xl:border-t-0 xl:border-l border-slate-100 dark:border-zinc-800 xl:pl-8"
+                : ""
+          }
+        >
           <Preview content={content} />
         </div>
       </div>
