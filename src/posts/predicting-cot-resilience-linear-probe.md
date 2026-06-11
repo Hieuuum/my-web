@@ -5,13 +5,13 @@ date: "2026-05-18"
 
 ## TL;DR
 
-- Macar et al.[^1] introduced a new metric called chain-of-thought (CoT) resilience. It measures how persistent a sentence is in a CoT by intervening at different positions, changing the model's activations, which makes it unsuitable for linear probes.
-- I wanted to see if thought resilience is linearly encoded in the model's residual activations. If successful, we can just run a forward pass through a linear probe to predict this metric. 
-- Because the previous metric wasn't suitable for linear probes, I designed a new metric called thought reappearance, which aims to measure the same concept by fixing the previous sentences and resampling the current one. 
+- Macar et al.[^1] introduced a new metric called chain-of-thought (CoT) resilience. It measures how persistent a sentence is in a CoT by intervening at increasing positions until there is no sentence with similar semantic meaning to the measured sentence.
+- I wanted to see if thought resilience is linearly encoded in the model's residual activations.
+- Linear probes predict whether a linear feature is present in a model's activation at a fixed time. However, Macar et al.'s [^1] method is dependent on changing activations, making it unsuitable for linear probes. Therefore I designed a new metric called thought reappearance, which aims to measure the same concept by fixing the previous sentences, resampling the current one 20 times, and increase the count by 1 if there is at least one sentence with >= 0.75 cosine similarity in each iteration. 
 - On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
 - Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for simple word patterns.
-- [Macar et al.](https://arxiv.org/abs/2510.27484) also introduced Counterfactual Importance++, which measures how much a CoT causally drives the final output. I should've measured this metric instead of resilience, and would love to explore this in the future.
-- For my next steps, I will run a bag-of-words baseline to see if the linear probe is using surface features or not,  and examine the model's reasoning after steering the model along the learned resilience direction to verify the direction is causal, not just correlated.
+- Macar et al.[^1] also introduced Counterfactual Importance++, which measures how much a CoT causally drives the final output. I should've measured this metric instead of resilience, and would love to explore this in the future.
+- For my next steps, I will run a bag-of-words baseline to see if the linear probe is detecting surface features or not, and examine the model's reasoning after steering it along the learned resilience direction to verify the direction is causal, not just correlated.
 
 ---
 
