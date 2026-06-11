@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -123,6 +123,11 @@ export default function Editor() {
 
   // UI state
   const [view, setView] = useState("write"); // "write" | "preview" | "split"
+  // Debounced copy of content for the preview pane: re-parsing markdown on
+  // every keystroke remounts <img> nodes, which collapse to zero height
+  // until the image reloads — shrinking the document and bouncing the
+  // page scroll in Split view.
+  const [previewContent, setPreviewContent] = useState("");
   const [status, setStatus] = useState(""); // status bar text
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -419,19 +424,28 @@ export default function Editor() {
   }
 
   // ── textarea auto-grow ───────────────────────────────────────────────────
-  // Runs on load, restore, view switch, and every content change. Collapsing
-  // to "auto" momentarily shrinks the document, which yanks the page scroll
-  // to the top — save and restore the scroll position around the measurement.
+  // Grow-only: never collapse the textarea to measure it. A momentary
+  // collapse shrinks the document, the browser clamps the page scroll, and
+  // the site's scroll-behavior:smooth animates the restore — a visible
+  // bounce on every keystroke. Growing only means the document never
+  // shrinks, so there is nothing to restore. useLayoutEffect runs before
+  // paint so the grown size is never preceded by an overflowing frame.
+  // Browsers with CSS field-sizing:content size the box natively and this
+  // effect no-ops (scrollHeight never exceeds clientHeight).
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!loaded) return;
     const ta = textareaRef.current;
     if (!ta || ta.offsetParent === null) return; // hidden in Preview mode
-    const { scrollX, scrollY } = window;
-    ta.style.height = "auto";
-    ta.style.height = ta.scrollHeight + "px";
-    window.scrollTo(scrollX, scrollY);
+    if (ta.scrollHeight > ta.clientHeight) {
+      ta.style.height = ta.scrollHeight + "px";
+    }
   }, [content, view, loaded]);
+
+  useEffect(() => {
+    const id = setTimeout(() => setPreviewContent(content), 150);
+    return () => clearTimeout(id);
+  }, [content]);
 
   function handleContentChange(e) {
     setContent(e.target.value);
@@ -592,7 +606,7 @@ export default function Editor() {
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
             placeholder="Write in markdown…"
-            className="w-full font-mono text-sm text-slate-700 dark:text-zinc-300 border-none outline-none resize-none bg-transparent placeholder-slate-300 dark:placeholder-zinc-700"
+            className="w-full font-mono text-sm text-slate-700 dark:text-zinc-300 border-none outline-none resize-none bg-transparent placeholder-slate-300 dark:placeholder-zinc-700 [field-sizing:content]"
             style={{ minHeight: "60vh" }}
           />
         </div>
@@ -607,7 +621,7 @@ export default function Editor() {
                 : ""
           }
         >
-          <Preview content={content} />
+          <Preview content={previewContent} />
         </div>
       </div>
 
