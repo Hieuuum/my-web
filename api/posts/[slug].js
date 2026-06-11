@@ -71,7 +71,21 @@ async function handlePut(req, res, slug) {
     if (renameFrom && renameFrom !== slug) {
       const oldFile = await getFile(`src/posts/${renameFrom}.md`);
       if (oldFile) {
-        await deleteFile(`src/posts/${renameFrom}.md`, `Delete post: ${renameFrom}`, oldFile.sha);
+        try {
+          await deleteFile(`src/posts/${renameFrom}.md`, `Delete post: ${renameFrom}`, oldFile.sha);
+        } catch (deleteErr) {
+          if (deleteErr instanceof ConflictError) {
+            // Compensate: remove the new file we just created to avoid duplicate posts
+            try {
+              await deleteFile(`src/posts/${slug}.md`, `Revert: ${slug}`, result.sha);
+            } catch {
+              // best-effort; log so the partial state can be detected
+              console.error(`Rename partial failure: ${slug}.md created but ${renameFrom}.md not deleted`);
+            }
+            return res.status(409).json({ error: "conflict" });
+          }
+          throw deleteErr;
+        }
       }
     }
 

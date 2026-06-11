@@ -45,6 +45,10 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: "Invalid password" });
   }
 
+  // Clear the rate-limit counter on successful login so the legitimate user
+  // is not locked out within the same window after an attacker pre-filled it.
+  _attempts.delete(ip);
+
   res.setHeader("Set-Cookie", createSessionCookie());
   return res.status(204).end();
 }

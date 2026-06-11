@@ -34,7 +34,11 @@ export async function listDir(path) {
     if (res.status === 404) return [];
     throw new Error(`GitHub listDir failed: ${res.status}`);
   }
-  return res.json();
+  const data = await res.json();
+  if (data.length === 1000) {
+    console.warn(`listDir: result for "${path}" may be truncated at 1000 entries`);
+  }
+  return data;
 }
 
 export async function getFile(path) {

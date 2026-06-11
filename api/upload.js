@@ -35,8 +35,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "File type not allowed" });
   }
 
-  // Validate size (base64 decoded length)
-  const decodedLength = Math.floor((dataBase64.length * 3) / 4);
+  // Validate size (base64 decoded length, accounting for padding)
+  const padding = (dataBase64.match(/={1,2}$/) || [""])[0].length;
+  const decodedLength = Math.floor((dataBase64.length * 3) / 4) - padding;
   if (decodedLength > MAX_BYTES) {
     return res.status(400).json({ error: "File too large (max 4MB)" });
   }

@@ -8,13 +8,26 @@ export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+    setPost(null);
+    setNotFound(false);
     getPost(slug).then((p) => {
       if (!p) setNotFound(true);
       else setPost(p);
+      setLoading(false);
     });
   }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 pt-16">
+        <p className="text-slate-400 dark:text-zinc-500">Loading...</p>
+      </div>
+    );
+  }
 
   if (notFound) {
     return (

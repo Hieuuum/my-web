@@ -71,15 +71,25 @@ export default function Nav() {
 
         {/* desktop */}
         <nav className="hidden sm:flex items-center gap-6">
-          {links.map(({ to, label }) => (
-            <a
-              key={label}
-              href={to}
-              className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
-            >
-              {label}
-            </a>
-          ))}
+          {links.map(({ to, label }) =>
+            to.startsWith("/#") ? (
+              <a
+                key={label}
+                href={to}
+                className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                to={to}
+                className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+              >
+                {label}
+              </Link>
+            )
+          )}
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -139,16 +149,27 @@ export default function Nav() {
       {/* mobile menu */}
       {open && (
         <div className="sm:hidden border-t border-slate-100 dark:border-zinc-800 px-6 py-4 flex flex-col gap-4">
-          {links.map(({ to, label }) => (
-            <a
-              key={label}
-              href={to}
-              className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
-              onClick={() => setOpen(false)}
-            >
-              {label}
-            </a>
-          ))}
+          {links.map(({ to, label }) =>
+            to.startsWith("/#") ? (
+              <a
+                key={label}
+                href={to}
+                className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                to={to}
+                className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </Link>
+            )
+          )}
         </div>
       )}
     </header>

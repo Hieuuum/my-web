@@ -65,7 +65,11 @@ export function verifySession(req) {
   const expectedHmac = createHmac("sha256", _sessionSecret).update(expiryStr).digest("hex");
 
   if (providedHmac.length !== expectedHmac.length) return false;
-  return timingSafeEqual(Buffer.from(providedHmac, "hex"), Buffer.from(expectedHmac, "hex"));
+  try {
+    return timingSafeEqual(Buffer.from(providedHmac, "hex"), Buffer.from(expectedHmac, "hex"));
+  } catch {
+    return false;
+  }
 }
 
 export function requireAuth(req, res) {

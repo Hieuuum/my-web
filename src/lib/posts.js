@@ -4,7 +4,7 @@ const modules = import.meta.glob("../posts/*.md", {
 });
 
 function parseFrontmatter(raw) {
-  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n([\s\S]*))?$/);
   if (!match) return { data: {}, content: raw };
   const data = {};
   match[1].split("\n").forEach((line) => {
@@ -17,7 +17,7 @@ function parseFrontmatter(raw) {
       .replace(/^["']|["']$/g, "");
     data[key] = val;
   });
-  return { data, content: match[2].trim() };
+  return { data, content: (match[2] ?? "").trim() };
 }
 
 function slugFromPath(path) {
@@ -32,9 +32,13 @@ export async function getAllPosts() {
       return { slug: slugFromPath(path), data, content };
     }),
   );
+  const dateVal = (p) => {
+    const t = new Date(p.data.date).getTime();
+    return isNaN(t) ? 0 : t;
+  };
   return posts
-    .filter((p) => p.data.draft !== "true")
-    .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+    .filter((p) => p.data.draft?.toLowerCase() !== "true")
+    .sort((a, b) => dateVal(b) - dateVal(a));
 }
 
 export async function getPost(slug) {
@@ -44,6 +48,6 @@ export async function getPost(slug) {
   if (!entry) return null;
   const raw = await entry[1]();
   const { data, content } = parseFrontmatter(raw);
-  if (data.draft === "true") return null;
+  if (data.draft?.toLowerCase() === "true") return null;
   return { slug, data, content };
 }

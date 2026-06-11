@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate, Link, useNavigate, useLocation } from "react-router-dom";
-import { api } from "./api";
+import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
+import { api, ApiError } from "./api";
 import Login from "./pages/Login";
 import PostList from "./pages/PostList";
 import Editor from "./pages/Editor";
@@ -14,16 +14,16 @@ function AdminHeader() {
   }
 
   return (
-    <header className="border-b border-slate-100 px-6 py-3 flex items-center gap-6">
-      <Link to="/" className="text-sm text-slate-400 hover:text-slate-900 transition-colors">
+    <header className="border-b border-slate-100 dark:border-zinc-800 px-6 py-3 flex items-center gap-6">
+      <Link to="/" className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
         mhieuuu
       </Link>
-      <Link to="/admin/posts" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+      <Link to="/admin/posts" className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
         Posts
       </Link>
       <button
         onClick={handleLogout}
-        className="text-sm text-slate-400 hover:text-slate-600 transition-colors ml-auto"
+        className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors ml-auto"
       >
         Log out
       </button>
@@ -34,18 +34,19 @@ function AdminHeader() {
 function AuthGuard({ children }) {
   const [status, setStatus] = useState("loading"); // "loading" | "ok" | "unauth"
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     api.getMe().then(() => {
       setStatus("ok");
-    }).catch(() => {
-      setStatus("unauth");
-      if (location.pathname !== "/admin/login") {
+    }).catch((err) => {
+      if (err instanceof ApiError && err.status === 401) {
+        setStatus("unauth");
         navigate("/admin/login", { replace: true });
       }
+      // Network errors / 5xx: leave the user where they are
     });
-  }, [navigate, location.pathname]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (status === "loading") return null;
   return children;

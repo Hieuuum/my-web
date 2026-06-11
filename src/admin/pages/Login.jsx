@@ -18,6 +18,8 @@ export default function Login() {
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
         setError("Invalid password.");
+      } else if (err instanceof ApiError && err.status === 429) {
+        setError("Too many attempts — please wait a minute before trying again.");
       } else {
         setError("Something went wrong. Try again.");
       }
@@ -29,7 +31,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center px-6">
       <form onSubmit={handleSubmit} className="w-full max-w-xs">
-        <h1 className="text-xl font-semibold text-slate-900 mb-6">Admin</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-zinc-100 mb-6">Admin</h1>
         <input
           type="password"
           value={password}
@@ -37,15 +39,15 @@ export default function Login() {
           placeholder="Password"
           autoFocus
           required
-          className="w-full border border-slate-200 rounded px-3 py-2 text-slate-900 text-sm focus:outline-none focus:border-slate-400 mb-3"
+          className="w-full border border-slate-200 dark:border-zinc-700 rounded px-3 py-2 text-slate-900 dark:text-zinc-100 bg-transparent dark:bg-zinc-900 text-sm focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500 placeholder-slate-300 dark:placeholder-zinc-600 mb-3"
         />
         {error && (
-          <p className="text-sm text-slate-500 mb-3">{error}</p>
+          <p className="text-sm text-slate-500 dark:text-zinc-400 mb-3">{error}</p>
         )}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-slate-900 text-white text-sm py-2 rounded hover:bg-slate-700 transition-colors disabled:opacity-50"
+          className="w-full bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-sm py-2 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>
