@@ -1,6 +1,6 @@
 ---
 title: "Predicting Chain-of-Thought Resilience with a Linear Probe"
-date: "2026-12-05"
+date: "2026-05-18"
 excerpt: "Measuring which reasoning steps matter usually takes 20 model completions per sentence. I tried to read it off the activations in one forward pass. Here's the whole journey — including where it didn't work."
 ---
 
