@@ -6,7 +6,7 @@ excerpt: "Measuring which reasoning steps matter usually takes 20 model completi
 
 ## TL;DR
 
-- [Macar et al.](https://arxiv.org/abs/2510.27484) introduced thought resilience, a metric measuring how chain-of-thought (CoT) sentences are likely to reappear downstream when you resample CoTs. This is expensive as it requires at least 20 model completions per sentence.
+- Macar et al.[^1] introduced thought resilience, a metric measuring how chain-of-thought (CoT) sentences are likely to reappear downstream when you resample CoTs. This is expensive as it requires at least 20 model completions per sentence.
 - I wanted to test whether resilience is linearly encoded in the model's activations. If it does, we can just run a  forward pass through a linear probe to predict this metric.
 - On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
 - Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for simple word patterns.
@@ -87,3 +87,6 @@ There are also limits I can't wave away. It's one model (Qwen3-4B), one domain (
 The experiment I actually want to run next is **steering**: add or subtract the resilience direction in the residual stream and watch whether the model's later reasoning changes. If it does, the direction isn't merely correlated with resilience — it's part of how the model produces it. That's the line between "an interesting probe" and "a lever you can pull," and it's where I think this gets genuinely useful.
 
 The code is [here](https://github.com/Hieuuum/linear-cot). It's a feasibility study with rough edges, and the limitations section is long on purpose.
+
+## References
+[^1}: https://arxiv.org/abs/2510.27484f
