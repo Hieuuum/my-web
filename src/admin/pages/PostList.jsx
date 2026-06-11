@@ -35,20 +35,20 @@ export default function PostList() {
         <h1 className="text-xl font-semibold text-slate-900 dark:text-zinc-100">Posts</h1>
         <Link
           to="/admin/posts/new"
-          className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors"
+          className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
         >
           New post
         </Link>
       </div>
 
-      {error && <p className="text-sm text-slate-500 dark:text-zinc-400 mb-4">{error}</p>}
+      {error && <p className="text-sm text-slate-600 dark:text-zinc-300 mb-4">{error}</p>}
 
       {posts === null && !error && (
-        <p className="text-sm text-slate-400 dark:text-zinc-500">Loading…</p>
+        <p className="text-sm text-slate-500 dark:text-zinc-400">Loading…</p>
       )}
 
       {posts && posts.length === 0 && (
-        <p className="text-sm text-slate-400 dark:text-zinc-500">No posts yet.</p>
+        <p className="text-sm text-slate-500 dark:text-zinc-400">No posts yet.</p>
       )}
 
       {posts && posts.length > 0 && (
@@ -58,20 +58,20 @@ export default function PostList() {
               <div className="min-w-0 flex-1">
                 <Link
                   to={`/admin/posts/${post.slug}`}
-                  className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors"
+                  className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
                 >
-                  {post.title || <span className="italic text-slate-400 dark:text-zinc-500">Untitled</span>}
+                  {post.title || <span className="italic text-slate-500 dark:text-zinc-400">Untitled</span>}
                 </Link>
                 <div className="flex items-center gap-3 mt-0.5">
-                  <span className="text-xs text-slate-400 dark:text-zinc-500">{post.date}</span>
+                  <span className="text-xs text-slate-500 dark:text-zinc-400">{post.date}</span>
                   {post.draft && (
-                    <span className="text-xs text-slate-400 dark:text-zinc-500">Draft</span>
+                    <span className="text-xs text-slate-500 dark:text-zinc-400">Draft</span>
                   )}
                 </div>
               </div>
               <button
                 onClick={() => handleDelete(post)}
-                className="text-xs text-slate-400 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors ml-4 shrink-0"
+                className="text-xs text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 transition-colors ml-4 shrink-0"
               >
                 Delete
               </button>

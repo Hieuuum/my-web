@@ -29,7 +29,7 @@ This site is **extremely minimalist**. Enforce these strictly:
 - No decorative elements — no gradients, shadows, illustrations, icons, or background colors
 - No animations or transitions beyond simple `transition-colors` on hover
 - Typography and whitespace do all the work — resist adding visual complexity to fill space
-- Palette: white background, slate-900 headings, slate-500/600 body, slate-400 muted, slate-100/200 borders only
+- Palette: white background, slate-900 headings, slate-600/700 body, slate-500 muted, slate-100/200 borders only (dark: zinc-950 bg, zinc-100 headings, zinc-300 body, zinc-400 muted)
 - If a UI element feels "designed", simplify it
 - When in doubt, remove rather than add
 

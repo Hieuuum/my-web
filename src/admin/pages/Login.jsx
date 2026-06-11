@@ -39,10 +39,10 @@ export default function Login() {
           placeholder="Password"
           autoFocus
           required
-          className="w-full border border-slate-200 dark:border-zinc-700 rounded px-3 py-2 text-slate-900 dark:text-zinc-100 bg-transparent dark:bg-zinc-900 text-sm focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500 placeholder-slate-300 dark:placeholder-zinc-600 mb-3"
+          className="w-full border border-slate-200 dark:border-zinc-700 rounded px-3 py-2 text-slate-900 dark:text-zinc-100 bg-transparent dark:bg-zinc-900 text-sm focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500 placeholder-slate-400 dark:placeholder-zinc-500 mb-3"
         />
         {error && (
-          <p className="text-sm text-slate-500 dark:text-zinc-400 mb-3">{error}</p>
+          <p className="text-sm text-slate-600 dark:text-zinc-300 mb-3">{error}</p>
         )}
         <button
           type="submit"

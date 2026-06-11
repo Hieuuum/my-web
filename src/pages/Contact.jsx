@@ -12,7 +12,7 @@ export default function Contact() {
       <h1 className="text-3xl font-semibold text-slate-900 dark:text-zinc-100 mb-2">
         Contact
       </h1>
-      <p className="text-slate-500 dark:text-zinc-400 mb-12 max-w-lg">
+      <p className="text-slate-600 dark:text-zinc-300 mb-12 max-w-lg">
         I&apos;m always happy to hear from people working on interesting
         problems. Whether it&apos;s research, a project idea, or just a question
         — feel free to reach out.
@@ -24,7 +24,7 @@ export default function Contact() {
             key={link.label}
             className="py-4 flex items-baseline justify-between gap-6"
           >
-            <span className="text-xs text-slate-400 dark:text-zinc-500 uppercase tracking-widest shrink-0">
+            <span className="text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest shrink-0">
               {link.label}
             </span>
             <a
@@ -33,7 +33,7 @@ export default function Contact() {
                 target: "_blank",
                 rel: "noopener noreferrer",
               })}
-              className="text-slate-900 dark:text-zinc-100 hover:text-slate-500 dark:hover:text-zinc-400 transition-colors text-right break-all"
+              className="text-slate-900 dark:text-zinc-100 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors text-right break-all"
             >
               {link.value}
             </a>

@@ -45,7 +45,7 @@ export default function Projects() {
       <h1 className="text-3xl font-semibold text-slate-900 dark:text-zinc-100 mb-2">
         Projects
       </h1>
-      <p className="text-slate-500 dark:text-zinc-400 mb-12">
+      <p className="text-slate-600 dark:text-zinc-300 mb-12">
         Things I&apos;ve built or am currently building.
       </p>
 
@@ -56,18 +56,18 @@ export default function Projects() {
               <h2 className="text-base font-medium text-slate-900 dark:text-zinc-100">
                 {project.title}
               </h2>
-              <span className="text-sm text-slate-400 dark:text-zinc-500 shrink-0">
+              <span className="text-sm text-slate-500 dark:text-zinc-400 shrink-0">
                 {project.date}
               </span>
             </div>
-            <p className="text-slate-500 dark:text-zinc-400 text-sm leading-relaxed mb-3">
+            <p className="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed mb-3">
               {project.description}
             </p>
             <div className="flex flex-wrap gap-2 mb-3">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-0.5 border border-slate-200 dark:border-zinc-700 rounded text-slate-400 dark:text-zinc-500"
+                  className="text-xs px-2 py-0.5 border border-slate-200 dark:border-zinc-700 rounded text-slate-500 dark:text-zinc-400"
                 >
                   {tag}
                 </span>
@@ -79,7 +79,7 @@ export default function Projects() {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+                  className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
                 >
                   GitHub ↗
                 </a>
@@ -89,7 +89,7 @@ export default function Projects() {
                   href={project.writeup}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+                  className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
                 >
                   Writeup ↗
                 </a>
@@ -99,7 +99,7 @@ export default function Projects() {
                   href={project.demo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+                  className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
                 >
                   Demo ↗
                 </a>

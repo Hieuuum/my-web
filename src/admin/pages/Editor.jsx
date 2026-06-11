@@ -484,18 +484,18 @@ export default function Editor() {
       {/* Restore banner */}
       {restoreBanner && (
         <div className="mb-6 flex items-center gap-4 border border-slate-200 dark:border-zinc-700 rounded px-4 py-3">
-          <span className="text-sm text-slate-600 dark:text-zinc-400 flex-1">
+          <span className="text-sm text-slate-700 dark:text-zinc-300 flex-1">
             Restore unsaved changes from {new Date(restoreBanner.savedAt).toLocaleString()}?
           </span>
           <button
             onClick={handleRestore}
-            className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors"
+            className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
           >
             Restore
           </button>
           <button
             onClick={handleDiscard}
-            className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors"
+            className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
           >
             Discard
           </button>
@@ -513,19 +513,19 @@ export default function Editor() {
           if (e.key === "Enter") e.preventDefault();
         }}
         placeholder="Title"
-        className="w-full text-3xl font-semibold text-slate-900 dark:text-zinc-100 border-none outline-none resize-none overflow-hidden placeholder-slate-300 dark:placeholder-zinc-700 mb-1 bg-transparent [field-sizing:content]"
+        className="w-full text-3xl font-semibold text-slate-900 dark:text-zinc-100 border-none outline-none resize-none overflow-hidden placeholder-slate-400 dark:placeholder-zinc-600 mb-1 bg-transparent [field-sizing:content]"
       />
 
       {/* Slug (new post only until first save) */}
       {(isNew || !sha) && (
         <div className="flex items-center gap-1 mb-4">
-          <span className="text-xs text-slate-400 dark:text-zinc-500">slug:</span>
+          <span className="text-xs text-slate-500 dark:text-zinc-400">slug:</span>
           <input
             type="text"
             value={slug}
             onChange={handleSlugChange}
             placeholder="auto"
-            className="text-xs text-slate-400 dark:text-zinc-500 border-none outline-none bg-transparent placeholder-slate-300 dark:placeholder-zinc-700"
+            className="text-xs text-slate-500 dark:text-zinc-400 border-none outline-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600"
           />
         </div>
       )}
@@ -533,22 +533,22 @@ export default function Editor() {
       {/* Meta row */}
       <div className="flex flex-wrap gap-4 mb-6 border-b border-slate-100 dark:border-zinc-800 pb-4">
         <div className="flex items-center gap-2">
-          <label className="text-xs text-slate-400 dark:text-zinc-500">Date</label>
+          <label className="text-xs text-slate-500 dark:text-zinc-400">Date</label>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="text-sm text-slate-600 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 rounded px-2 py-1 bg-transparent dark:bg-zinc-900 focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500"
+            className="text-sm text-slate-700 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700 rounded px-2 py-1 bg-transparent dark:bg-zinc-900 focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500"
           />
         </div>
         <div className="flex items-center gap-2 flex-1 min-w-48">
-          <label className="text-xs text-slate-400 dark:text-zinc-500">Excerpt</label>
+          <label className="text-xs text-slate-500 dark:text-zinc-400">Excerpt</label>
           <input
             type="text"
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             placeholder="One-line summary"
-            className="flex-1 text-sm text-slate-600 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 rounded px-2 py-1 bg-transparent dark:bg-zinc-900 focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500 placeholder-slate-300 dark:placeholder-zinc-600"
+            className="flex-1 text-sm text-slate-700 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700 rounded px-2 py-1 bg-transparent dark:bg-zinc-900 focus:outline-none focus:border-slate-400 dark:focus:border-zinc-500 placeholder-slate-400 dark:placeholder-zinc-500"
           />
         </div>
       </div>
@@ -566,7 +566,7 @@ export default function Editor() {
                   applyToolbar(action, textareaRef.current, setContent);
                 }
               }}
-              className="text-xs text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors px-1.5 py-1 font-mono"
+              className="text-xs text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors px-1.5 py-1 font-mono"
             >
               {action.label}
             </button>
@@ -575,7 +575,7 @@ export default function Editor() {
           <button
             type="button"
             onClick={handleImageToolbar}
-            className="text-xs text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors px-1.5 py-1 font-mono"
+            className="text-xs text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors px-1.5 py-1 font-mono"
           >
             Image
           </button>
@@ -586,7 +586,7 @@ export default function Editor() {
           <button
             type="button"
             onClick={() => setView("write")}
-            className={`text-xs transition-colors ${view === "write" ? "text-slate-900 dark:text-zinc-100" : "text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400"}`}
+            className={`text-xs transition-colors ${view === "write" ? "text-slate-900 dark:text-zinc-100" : "text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"}`}
           >
             Write
           </button>
@@ -594,7 +594,7 @@ export default function Editor() {
           <button
             type="button"
             onClick={() => setView("preview")}
-            className={`text-xs transition-colors ${view === "preview" ? "text-slate-900 dark:text-zinc-100" : "text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400"}`}
+            className={`text-xs transition-colors ${view === "preview" ? "text-slate-900 dark:text-zinc-100" : "text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"}`}
           >
             Preview
           </button>
@@ -602,7 +602,7 @@ export default function Editor() {
           <button
             type="button"
             onClick={() => setView("split")}
-            className={`text-xs transition-colors ${view === "split" ? "text-slate-900 dark:text-zinc-100" : "text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400"}`}
+            className={`text-xs transition-colors ${view === "split" ? "text-slate-900 dark:text-zinc-100" : "text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"}`}
           >
             Split
           </button>
@@ -621,7 +621,7 @@ export default function Editor() {
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
             placeholder="Write in markdown…"
-            className="w-full font-mono text-sm text-slate-700 dark:text-zinc-300 border-none outline-none resize-none bg-transparent placeholder-slate-300 dark:placeholder-zinc-700 [field-sizing:content]"
+            className="w-full font-mono text-sm text-slate-800 dark:text-zinc-200 border-none outline-none resize-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600 [field-sizing:content]"
             style={{ minHeight: "60vh" }}
           />
         </div>
@@ -647,7 +647,7 @@ export default function Editor() {
             <button
               onClick={() => save(true)}
               disabled={saving}
-              className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors disabled:opacity-50"
+              className="text-sm text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors disabled:opacity-50"
             >
               Save draft
             </button>
@@ -671,7 +671,7 @@ export default function Editor() {
             <button
               onClick={() => save(true)}
               disabled={saving}
-              className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors disabled:opacity-50"
+              className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors disabled:opacity-50"
             >
               Unpublish
             </button>
@@ -682,20 +682,20 @@ export default function Editor() {
           <button
             onClick={handleDelete}
             disabled={saving}
-            className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors ml-auto disabled:opacity-50"
+            className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors ml-auto disabled:opacity-50"
           >
             Delete
           </button>
         )}
 
         {/* Status bar */}
-        <span className={`text-xs text-slate-400 dark:text-zinc-500 ${sha ? "" : "ml-auto"}`}>
+        <span className={`text-xs text-slate-500 dark:text-zinc-400 ${sha ? "" : "ml-auto"}`}>
           {status}
         </span>
       </div>
 
       {error && (
-        <p className="text-xs text-slate-500 dark:text-zinc-400 mt-2">{error}</p>
+        <p className="text-xs text-slate-600 dark:text-zinc-300 mt-2">{error}</p>
       )}
     </div>
   );

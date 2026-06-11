@@ -10,7 +10,7 @@ import Contact from "./pages/Contact";
 function NotFound() {
   return (
     <div className="max-w-3xl mx-auto px-6 pt-20">
-      <p className="text-slate-500 dark:text-zinc-400">404 — Page not found.</p>
+      <p className="text-slate-600 dark:text-zinc-300">404 — Page not found.</p>
       <Link
         to="/"
         className="text-sm text-slate-900 dark:text-zinc-100 underline mt-4 inline-block"

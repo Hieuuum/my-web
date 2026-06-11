@@ -24,7 +24,7 @@ export default function BlogPost() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto px-6 pt-16">
-        <p className="text-slate-400 dark:text-zinc-500">Loading...</p>
+        <p className="text-slate-500 dark:text-zinc-400">Loading...</p>
       </div>
     );
   }
@@ -32,7 +32,7 @@ export default function BlogPost() {
   if (notFound) {
     return (
       <div className="max-w-3xl mx-auto px-6 pt-20">
-        <p className="text-slate-500 dark:text-zinc-400">Post not found.</p>
+        <p className="text-slate-600 dark:text-zinc-300">Post not found.</p>
         <Link
           to="/blog"
           className="text-sm text-slate-900 dark:text-zinc-100 underline mt-4 inline-block"
@@ -49,7 +49,7 @@ export default function BlogPost() {
     <article className="max-w-3xl mx-auto px-6 pt-16 pb-16">
       <Link
         to="/blog"
-        className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors mb-10 inline-block"
+        className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors mb-10 inline-block"
       >
         ← Writing
       </Link>
@@ -57,7 +57,7 @@ export default function BlogPost() {
         <h1 className="text-3xl font-semibold text-slate-900 dark:text-zinc-100 leading-snug mb-3">
           {post.data.title}
         </h1>
-        <p className="text-sm text-slate-400 dark:text-zinc-500">
+        <p className="text-sm text-slate-500 dark:text-zinc-400">
           {post.data.date}
         </p>
       </header>

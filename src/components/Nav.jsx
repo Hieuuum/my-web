@@ -29,7 +29,7 @@ export default function Nav() {
               <a
                 key={label}
                 href={to}
-                className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+                className="text-sm text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
               >
                 {label}
               </a>
@@ -37,7 +37,7 @@ export default function Nav() {
               <Link
                 key={label}
                 to={to}
-                className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+                className="text-sm text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
               >
                 {label}
               </Link>
@@ -50,7 +50,7 @@ export default function Nav() {
         <div className="sm:hidden flex items-center gap-3">
           <ThemeToggle />
           <button
-            className="text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
+            className="text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -95,7 +95,7 @@ export default function Nav() {
               <a
                 key={label}
                 href={to}
-                className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
+                className="text-sm text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100"
                 onClick={() => setOpen(false)}
               >
                 {label}
@@ -104,7 +104,7 @@ export default function Nav() {
               <Link
                 key={label}
                 to={to}
-                className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
+                className="text-sm text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100"
                 onClick={() => setOpen(false)}
               >
                 {label}

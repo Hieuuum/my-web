@@ -25,14 +25,14 @@ export default function Home() {
         <div className="grid md:grid-cols-[1fr_auto] gap-10 md:gap-12 items-start">
           <div>
             <h1 className="mb-8">
-              <span className="block text-base text-slate-400 dark:text-zinc-500 mb-1">
+              <span className="block text-base text-slate-500 dark:text-zinc-400 mb-1">
                 Hi, I&apos;m
               </span>
               <span className="text-5xl sm:text-6xl font-semibold text-slate-900 dark:text-zinc-100">
                 Hieu
               </span>
             </h1>
-            <div className="space-y-4 text-slate-600 dark:text-zinc-400 leading-relaxed">
+            <div className="space-y-4 text-slate-700 dark:text-zinc-300 leading-relaxed">
               <p>
                 Undergraduate at Union College studying Computer Science and
                 Mathematics. I&apos;m interested in AI safety, making current AI
@@ -50,12 +50,12 @@ export default function Home() {
               </Link>
               <Link
                 to="/contact"
-                className="px-5 py-2.5 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 text-sm rounded-md hover:border-slate-400 dark:hover:border-zinc-500 transition-colors"
+                className="px-5 py-2.5 border border-slate-200 dark:border-zinc-700 text-slate-800 dark:text-zinc-200 text-sm rounded-md hover:border-slate-400 dark:hover:border-zinc-500 transition-colors"
               >
                 Get in touch
               </Link>
             </div>
-            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500 dark:text-zinc-400">
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-600 dark:text-zinc-300">
               {aboutLinks.map((link, i) => (
                 <span key={link.label} className="flex items-center gap-x-3">
                   {i > 0 && <span className="text-slate-300 dark:text-zinc-600">·</span>}
@@ -90,12 +90,12 @@ export default function Home() {
       {posts.length > 0 && (
         <section className="max-w-3xl mx-auto px-6 py-16 border-t border-slate-100 dark:border-zinc-800">
           <div className="flex items-baseline justify-between mb-8">
-            <h2 className="text-xs text-slate-400 dark:text-zinc-500 tracking-widest uppercase">
+            <h2 className="text-xs text-slate-500 dark:text-zinc-400 tracking-widest uppercase">
               Recent Writing
             </h2>
             <Link
               to="/blog"
-              className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
+              className="text-sm text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"
             >
               All posts →
             </Link>
@@ -105,15 +105,15 @@ export default function Home() {
               <li key={post.slug}>
                 <Link to={`/blog/${post.slug}`} className="group block">
                   <div className="flex items-baseline justify-between gap-4">
-                    <span className="text-slate-900 dark:text-zinc-100 group-hover:text-slate-600 dark:group-hover:text-zinc-400 transition-colors">
+                    <span className="text-slate-900 dark:text-zinc-100 group-hover:text-slate-700 dark:group-hover:text-zinc-300 transition-colors">
                       {post.data.title}
                     </span>
-                    <span className="text-sm text-slate-400 dark:text-zinc-500 shrink-0">
+                    <span className="text-sm text-slate-500 dark:text-zinc-400 shrink-0">
                       {post.data.date}
                     </span>
                   </div>
                   {post.data.excerpt && (
-                    <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">
+                    <p className="text-sm text-slate-600 dark:text-zinc-300 mt-1">
                       {post.data.excerpt}
                     </p>
                   )}

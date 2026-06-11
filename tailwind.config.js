@@ -10,19 +10,19 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            color: "#334155",
+            color: "#1e293b",
             a: { color: "#0f172a", textDecoration: "underline" },
             "h1,h2,h3,h4": { color: "#0f172a" },
           },
         },
         invert: {
           css: {
-            color: "#d4d4d8",
-            a: { color: "#e4e4e7", textDecoration: "underline" },
+            color: "#e4e4e7",
+            a: { color: "#f4f4f5", textDecoration: "underline" },
             "h1,h2,h3,h4": { color: "#f4f4f5" },
             strong: { color: "#f4f4f5" },
             code: { color: "#f4f4f5" },
-            blockquote: { color: "#d4d4d8" },
+            blockquote: { color: "#e4e4e7" },
           },
         },
       },

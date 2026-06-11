@@ -16,16 +16,16 @@ function AdminHeader() {
 
   return (
     <header className="border-b border-slate-100 dark:border-zinc-800 px-6 py-3 flex items-center gap-6">
-      <Link to="/" className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
+      <Link to="/" className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
         mhieuuu
       </Link>
-      <Link to="/admin/posts" className="text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
+      <Link to="/admin/posts" className="text-sm text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors">
         Posts
       </Link>
       <ThemeToggle className="ml-auto" />
       <button
         onClick={handleLogout}
-        className="text-sm text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors"
+        className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
       >
         Log out
       </button>
