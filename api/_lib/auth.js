@@ -11,7 +11,7 @@ if (!_sessionSecret || _sessionSecret.length < 32) {
 }
 
 // ADMIN_PASSWORD_HASH must be a scrypt-encoded string: "scrypt:<N>:<r>:<p>:<salt_hex>:<hash_hex>"
-// Generate with: node -e "const {scryptSync,randomBytes}=require('crypto');const s=randomBytes(16).toString('hex');const h=scryptSync('<password>',s,32).toString('hex');console.log('scrypt:16384:8:1:'+s+':'+h)"
+// Generate with: node -e "const {scryptSync,randomBytes}=require('crypto');const s=randomBytes(16).toString('hex');const h=scryptSync('<password>',Buffer.from(s,'hex'),32).toString('hex');console.log('scrypt:16384:8:1:'+s+':'+h)"
 export function verifyPassword(password) {
   const encoded = process.env.ADMIN_PASSWORD_HASH || "";
   if (!encoded.startsWith("scrypt:")) return false;
