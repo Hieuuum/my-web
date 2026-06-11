@@ -32,7 +32,9 @@ export async function getAllPosts() {
       return { slug: slugFromPath(path), data, content };
     }),
   );
-  return posts.sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+  return posts
+    .filter((p) => p.data.draft !== "true")
+    .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
 }
 
 export async function getPost(slug) {
@@ -42,5 +44,6 @@ export async function getPost(slug) {
   if (!entry) return null;
   const raw = await entry[1]();
   const { data, content } = parseFrontmatter(raw);
+  if (data.draft === "true") return null;
   return { slug, data, content };
 }
