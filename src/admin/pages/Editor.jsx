@@ -482,7 +482,7 @@ export default function Editor() {
   return (
     <div className={`${view === "split" ? "max-w-5xl" : "max-w-3xl"} mx-auto px-6 pt-3 pb-10`}>
       {/* Sticky toolbar: formatting, view toggle, actions, status */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-slate-100 dark:border-zinc-800 py-2 mb-4">
+      <div className="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-slate-100 dark:border-zinc-800 py-3 mb-4">
         <div className="flex items-center gap-4 flex-wrap">
           {/* Toolbar buttons */}
           <div className="flex items-center gap-1">
@@ -495,7 +495,7 @@ export default function Editor() {
                     applyToolbar(action, textareaRef.current, setContent);
                   }
                 }}
-                className="text-sm text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
+                className="text-base text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
               >
                 {action.label}
               </button>
@@ -504,7 +504,7 @@ export default function Editor() {
             <button
               type="button"
               onClick={handleImageToolbar}
-              className="text-sm text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
+              className="text-base text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
             >
               Image
             </button>
@@ -515,7 +515,7 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => setView("write")}
-              className={`text-sm transition-colors ${view === "write" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
+              className={`text-base transition-colors ${view === "write" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
             >
               Write
             </button>
@@ -523,7 +523,7 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => setView("preview")}
-              className={`text-sm transition-colors ${view === "preview" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
+              className={`text-base transition-colors ${view === "preview" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
             >
               Preview
             </button>
@@ -531,7 +531,7 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => setView("split")}
-              className={`text-sm transition-colors ${view === "split" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
+              className={`text-base transition-colors ${view === "split" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
             >
               Split
             </button>
@@ -544,14 +544,14 @@ export default function Editor() {
                 <button
                   onClick={() => save(true)}
                   disabled={saving}
-                  className="text-sm text-slate-700 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors disabled:opacity-50"
+                  className="text-base text-slate-700 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors disabled:opacity-50"
                 >
                   Save draft
                 </button>
                 <button
                   onClick={() => save(false)}
                   disabled={saving}
-                  className="text-sm bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
+                  className="text-base bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
                 >
                   Publish
                 </button>
@@ -561,14 +561,14 @@ export default function Editor() {
                 <button
                   onClick={() => save(false)}
                   disabled={saving}
-                  className="text-sm bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
+                  className="text-base bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
                 >
                   Save
                 </button>
                 <button
                   onClick={() => save(true)}
                   disabled={saving}
-                  className="text-sm text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors disabled:opacity-50"
+                  className="text-base text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors disabled:opacity-50"
                 >
                   Unpublish
                 </button>
@@ -578,7 +578,7 @@ export default function Editor() {
               <button
                 onClick={handleDelete}
                 disabled={saving}
-                className="text-sm text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors disabled:opacity-50"
+                className="text-base text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors disabled:opacity-50"
               >
                 Delete
               </button>
@@ -587,12 +587,12 @@ export default function Editor() {
 
           {/* Status bar */}
           {status && (
-            <span className="text-sm text-slate-500 dark:text-white">{status}</span>
+            <span className="text-base text-slate-500 dark:text-white">{status}</span>
           )}
         </div>
 
         {error && (
-          <p className="text-sm text-slate-600 dark:text-white mt-2">{error}</p>
+          <p className="text-base text-slate-600 dark:text-white mt-2">{error}</p>
         )}
       </div>
 
