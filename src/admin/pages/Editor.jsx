@@ -480,9 +480,9 @@ export default function Editor() {
   if (!loaded) return null;
 
   return (
-    <div className={`${view === "split" ? "max-w-5xl" : "max-w-3xl"} mx-auto px-6 pt-3 pb-10`}>
-      {/* Sticky toolbar: formatting, view toggle, actions, status */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-slate-100 dark:border-zinc-800 py-3 mb-4">
+    <>
+      {/* Sticky toolbar: full viewport width, formatting, view toggle, actions, status */}
+      <div className="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-slate-100 dark:border-zinc-800 px-6 py-3">
         <div className="flex items-center gap-4 flex-wrap">
           {/* Toolbar buttons */}
           <div className="flex items-center gap-1">
@@ -596,6 +596,7 @@ export default function Editor() {
         )}
       </div>
 
+      <div className={`${view === "split" ? "max-w-5xl" : "max-w-3xl"} mx-auto px-6 pt-4 pb-10`}>
       {/* Restore banner */}
       {restoreBanner && (
         <div className="mb-6 flex items-center gap-4 border border-slate-200 dark:border-zinc-700 rounded px-4 py-3">
@@ -699,6 +700,7 @@ export default function Editor() {
         </div>
       </div>
 
-    </div>
+      </div>
+    </>
   );
 }
