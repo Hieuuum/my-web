@@ -5,8 +5,7 @@ date: "2026-05-18"
 
 ## TL;DR
 
-- Macar et al.[^1] introduced thought resilience, a metric measuring how chain-of-thought (CoT) sentences are likely to reappear downstream when you resample CoTs. This is expensive as it requires at least 20 model completions per sentence.
-- I wanted to test whether resilience is linearly encoded in the model's activations. If it does, we can just run a  forward pass through a linear probe to predict this metric.
+- Inspired by chain-of-thought (CoT) resilience in Macar et al.[^1], I designed a new metric called thought reappearance, wanted to test whether resilience is linearly encoded in the model's activations. If it does, we can just run a  forward pass through a linear probe to predict this metric.
 - On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
 - Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for simple word patterns.
 - [Macar et al.](https://arxiv.org/abs/2510.27484) also introduced Counterfactual Importance++, which measures how much a CoT causally drives the final output. I should've measured this metric instead of resilience, and would love to explore this in the future.
