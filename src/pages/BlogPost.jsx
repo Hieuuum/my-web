@@ -62,7 +62,10 @@ export default function BlogPost() {
         </p>
       </header>
       <div className="prose prose-slate dark:prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
+        >
           {post.content}
         </ReactMarkdown>
       </div>

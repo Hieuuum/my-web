@@ -46,3 +46,5 @@ excerpt: "One-line summary."
 ```
 
 **New project**: edit the `projects` array in `src/pages/Projects.jsx`.
+
+**References/citations in a post**: GFM footnote syntax — `[^1]` in text, `[^1]: Source details` at the bottom. Renders as a numbered "References" section (label configured via `remarkRehypeOptions` in `BlogPost.jsx` and the admin editor preview).

@@ -33,7 +33,12 @@ function localKey(slug) {
 function Preview({ content }) {
   return (
     <div className="prose prose-slate dark:prose-invert max-w-none">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 }
