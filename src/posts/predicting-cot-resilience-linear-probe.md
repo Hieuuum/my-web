@@ -89,4 +89,4 @@ The experiment I actually want to run next is **steering**: add or subtract the 
 The code is [here](https://github.com/Hieuuum/linear-cot). It's a feasibility study with rough edges, and the limitations section is long on purpose.
 
 ## References
-[^1}: https://arxiv.org/abs/2510.27484f
+[^1]: https://arxiv.org/abs/2510.27484f
