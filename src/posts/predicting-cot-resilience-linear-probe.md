@@ -6,8 +6,8 @@ date: "2026-05-18"
 ## TL;DR
 
 - Macar et al.[^1] introduced a new metric called chain-of-thought (CoT) resilience. It measures how persistent a sentence is in a CoT by intervening at increasing positions until there is no sentence with similar semantic meaning to the measured sentence.
-- I wanted to see if thought resilience is linearly encoded in the model's residual activations.
-- Linear probes predict whether a linear feature is present in a model's activation at a fixed time. However, Macar et al.'s [^1] method is dependent on changing activations, making it unsuitable for linear probes. Therefore I designed a new metric called thought reappearance, which aims to measure the same concept by fixing the previous sentences, resampling the current one 20 times, and increase the count by 1 if there is at least one sentence with >= 0.75 cosine similarity in each iteration. 
+- I wanted to see if thought resilience is linearly encoded in the model's residual activations using linear probes predict whether a linear feature is present in a model's activation at a fixed time. 
+- However, Macar et al.'s [^1] method is dependent on changing activations, making it unsuitable for linear probes. Therefore I designed a new metric called thought reappearance, which aims to measure the same concept by fixing the previous sentences, resampling the current one 20 times, and increase the count by 1 if there is at least one sentence with >= 0.75 cosine similarity in each iteration. 
 - On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
 - Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for simple word patterns.
 - Macar et al.[^1] also introduced Counterfactual Importance++, which measures how much a CoT causally drives the final output. I should've measured this metric instead of resilience, and would love to explore this in the future.
@@ -17,9 +17,9 @@ date: "2026-05-18"
 
 ## Introduction
 
-When a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer, while others are just ad-hoc explanations that could be interchanged or skipped if it ran again. Telling these apart is useful for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
+Macar et al.[^1] found out that when a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer, while others are just ad-hoc explanations that could be interchanged or skipped if it ran again. Telling these apart is useful for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
 
-Macar et al. made this precise with a metric called **thought resilience**. The idea is to interpret a reasoning model not as producing one CoT, but as defining a *distribution* over many possible ones. To measure how committed the model is to a given sentence, you truncate the chain just before that sentence, let the model continue from that prefix, and check whether a semantically similar sentence comes back. Do it twenty times and count the reappearances. A sentence that keeps returning is resilient — the model insists on it. One that rarely returns is fragile.
+Thought Branches[^1] made this precise with a metric called **thought resilience**. The idea is to interpret a reasoning model not as producing one CoT, but as defining a *distribution* over many possible ones. To measure how committed the model is to a given sentence, you truncate the chain just before that sentence, let the model continue from that prefix, and check whether a semantically similar sentence comes back. Do it twenty times and count the reappearances. A sentence that keeps returning is resilient — the model insists on it. One that rarely returns is fragile.
 
 The catch is in that word *twenty*. Scoring one sentence costs twenty completions; scoring a whole trace costs that for every sentence in it. It is a powerful analysis tool and a hopeless live diagnostic — far too slow to run while a model is actually thinking.
 
