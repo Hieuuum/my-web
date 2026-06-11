@@ -1,12 +1,12 @@
 ---
 title: "Predicting Chain-of-Thought Resilience with a Linear Probe"
-date: "2026-02-04"
+date: "2026-12-05"
 excerpt: "Measuring which reasoning steps matter usually takes 20 model completions per sentence. I tried to read it off the activations in one forward pass. Here's the whole journey — including where it didn't work."
 ---
 
 ## TL;DR
 
-- **The problem:** Measuring which chain-of-thought sentences are likely to appear (a metric called *thought resilience*) needs at least 20 model completions per sentence, which is to expensive.
+- **The problem:** Measuring how chain-of-thought sentences are likely to appear (a metric called *thought resilience*) needs at least 20 model completions per sentence, which is to expensive.
 - **The idea:** Test whether resilience is already encoded in the model's activations, so a single forward pass through a linear probe could replace the 20 completions, massively speeding up the process.
 - **The result:** On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
 - **The interesting part:** Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for surface word patterns.
