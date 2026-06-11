@@ -484,18 +484,18 @@ export default function Editor() {
       {/* Restore banner */}
       {restoreBanner && (
         <div className="mb-6 flex items-center gap-4 border border-slate-200 dark:border-zinc-700 rounded px-4 py-3">
-          <span className="text-sm text-slate-700 dark:text-zinc-300 flex-1">
+          <span className="text-sm text-slate-700 dark:text-white flex-1">
             Restore unsaved changes from {new Date(restoreBanner.savedAt).toLocaleString()}?
           </span>
           <button
             onClick={handleRestore}
-            className="text-sm text-slate-900 dark:text-zinc-100 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
+            className="text-sm text-slate-900 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors"
           >
             Restore
           </button>
           <button
             onClick={handleDiscard}
-            className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors"
+            className="text-sm text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors"
           >
             Discard
           </button>
@@ -513,19 +513,19 @@ export default function Editor() {
           if (e.key === "Enter") e.preventDefault();
         }}
         placeholder="Title"
-        className="w-full text-3xl font-semibold text-slate-900 dark:text-zinc-100 border-none outline-none resize-none overflow-hidden placeholder-slate-400 dark:placeholder-zinc-600 mb-1 bg-transparent [field-sizing:content]"
+        className="w-full text-3xl font-semibold text-slate-900 dark:text-white border-none outline-none resize-none overflow-hidden placeholder-slate-400 dark:placeholder-zinc-600 mb-1 bg-transparent [field-sizing:content]"
       />
 
       {/* Slug (new post only until first save) */}
       {(isNew || !sha) && (
         <div className="flex items-center gap-1 mb-4">
-          <span className="text-xs text-slate-500 dark:text-zinc-400">slug:</span>
+          <span className="text-xs text-slate-500 dark:text-white">slug:</span>
           <input
             type="text"
             value={slug}
             onChange={handleSlugChange}
             placeholder="auto"
-            className="text-xs text-slate-500 dark:text-zinc-400 border-none outline-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600"
+            className="text-xs text-slate-500 dark:text-white border-none outline-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600"
           />
         </div>
       )}
@@ -553,60 +553,119 @@ export default function Editor() {
         </div>
       </div>
 
-      {/* Toolbar + Write/Preview toggle */}
-      <div className="flex items-center gap-4 mb-3 flex-wrap">
-        {/* Toolbar buttons */}
-        <div className="flex items-center gap-1">
-          {TOOLBAR_ACTIONS.map((action) => (
+      {/* Sticky toolbar: formatting, view toggle, actions, status */}
+      <div className="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-slate-100 dark:border-zinc-800 py-3 mb-3">
+        <div className="flex items-center gap-4 flex-wrap">
+          {/* Toolbar buttons */}
+          <div className="flex items-center gap-1">
+            {TOOLBAR_ACTIONS.map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                onClick={() => {
+                  if (textareaRef.current) {
+                    applyToolbar(action, textareaRef.current, setContent);
+                  }
+                }}
+                className="text-xs text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
+              >
+                {action.label}
+              </button>
+            ))}
+            {/* Image button */}
             <button
-              key={action.label}
               type="button"
-              onClick={() => {
-                if (textareaRef.current) {
-                  applyToolbar(action, textareaRef.current, setContent);
-                }
-              }}
-              className="text-xs text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors px-1.5 py-1 font-mono"
+              onClick={handleImageToolbar}
+              className="text-xs text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
             >
-              {action.label}
+              Image
             </button>
-          ))}
-          {/* Image button */}
-          <button
-            type="button"
-            onClick={handleImageToolbar}
-            className="text-xs text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors px-1.5 py-1 font-mono"
-          >
-            Image
-          </button>
+          </div>
+
+          {/* Write / Preview / Split toggle */}
+          <div className="flex items-center gap-2 ml-auto">
+            <button
+              type="button"
+              onClick={() => setView("write")}
+              className={`text-xs transition-colors ${view === "write" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
+            >
+              Write
+            </button>
+            <span className="text-slate-200 dark:text-zinc-700">|</span>
+            <button
+              type="button"
+              onClick={() => setView("preview")}
+              className={`text-xs transition-colors ${view === "preview" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
+            >
+              Preview
+            </button>
+            <span className="text-slate-200 dark:text-zinc-700">|</span>
+            <button
+              type="button"
+              onClick={() => setView("split")}
+              className={`text-xs transition-colors ${view === "split" ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"}`}
+            >
+              Split
+            </button>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3 border-l border-slate-200 dark:border-zinc-700 pl-4">
+            {isDraft || !sha ? (
+              <>
+                <button
+                  onClick={() => save(true)}
+                  disabled={saving}
+                  className="text-xs text-slate-700 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors disabled:opacity-50"
+                >
+                  Save draft
+                </button>
+                <button
+                  onClick={() => save(false)}
+                  disabled={saving}
+                  className="text-xs bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
+                >
+                  Publish
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => save(false)}
+                  disabled={saving}
+                  className="text-xs bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-1 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => save(true)}
+                  disabled={saving}
+                  className="text-xs text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors disabled:opacity-50"
+                >
+                  Unpublish
+                </button>
+              </>
+            )}
+            {sha && (
+              <button
+                onClick={handleDelete}
+                disabled={saving}
+                className="text-xs text-slate-500 dark:text-white hover:text-slate-700 dark:hover:text-white/70 transition-colors disabled:opacity-50"
+              >
+                Delete
+              </button>
+            )}
+          </div>
+
+          {/* Status bar */}
+          {status && (
+            <span className="text-xs text-slate-500 dark:text-white">{status}</span>
+          )}
         </div>
 
-        {/* Write / Preview / Split toggle */}
-        <div className="flex items-center gap-2 ml-auto">
-          <button
-            type="button"
-            onClick={() => setView("write")}
-            className={`text-xs transition-colors ${view === "write" ? "text-slate-900 dark:text-zinc-100" : "text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"}`}
-          >
-            Write
-          </button>
-          <span className="text-slate-200 dark:text-zinc-700">|</span>
-          <button
-            type="button"
-            onClick={() => setView("preview")}
-            className={`text-xs transition-colors ${view === "preview" ? "text-slate-900 dark:text-zinc-100" : "text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"}`}
-          >
-            Preview
-          </button>
-          <span className="text-slate-200 dark:text-zinc-700">|</span>
-          <button
-            type="button"
-            onClick={() => setView("split")}
-            className={`text-xs transition-colors ${view === "split" ? "text-slate-900 dark:text-zinc-100" : "text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"}`}
-          >
-            Split
-          </button>
-        </div>
+        {error && (
+          <p className="text-xs text-slate-600 dark:text-white mt-2">{error}</p>
+        )}
       </div>
 
       {/* Editor area */}
@@ -621,7 +680,7 @@ export default function Editor() {
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
             placeholder="Write in markdown…"
-            className="w-full font-mono text-sm text-slate-800 dark:text-zinc-200 border-none outline-none resize-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600 [field-sizing:content]"
+            className="w-full font-mono text-sm text-slate-800 dark:text-white border-none outline-none resize-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600 [field-sizing:content]"
             style={{ minHeight: "60vh" }}
           />
         </div>
@@ -640,63 +699,6 @@ export default function Editor() {
         </div>
       </div>
 
-      {/* Actions row */}
-      <div className="mt-8 pt-4 border-t border-slate-100 dark:border-zinc-800 flex items-center gap-4 flex-wrap">
-        {isDraft || !sha ? (
-          <>
-            <button
-              onClick={() => save(true)}
-              disabled={saving}
-              className="text-sm text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors disabled:opacity-50"
-            >
-              Save draft
-            </button>
-            <button
-              onClick={() => save(false)}
-              disabled={saving}
-              className="text-sm bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-1.5 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
-            >
-              Publish
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={() => save(false)}
-              disabled={saving}
-              className="text-sm bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-1.5 rounded hover:bg-slate-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50"
-            >
-              Save
-            </button>
-            <button
-              onClick={() => save(true)}
-              disabled={saving}
-              className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors disabled:opacity-50"
-            >
-              Unpublish
-            </button>
-          </>
-        )}
-
-        {sha && (
-          <button
-            onClick={handleDelete}
-            disabled={saving}
-            className="text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300 transition-colors ml-auto disabled:opacity-50"
-          >
-            Delete
-          </button>
-        )}
-
-        {/* Status bar */}
-        <span className={`text-xs text-slate-500 dark:text-zinc-400 ${sha ? "" : "ml-auto"}`}>
-          {status}
-        </span>
-      </div>
-
-      {error && (
-        <p className="text-xs text-slate-600 dark:text-zinc-300 mt-2">{error}</p>
-      )}
     </div>
   );
 }
