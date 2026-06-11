@@ -17,7 +17,7 @@ excerpt: "Measuring which reasoning steps matter usually takes 20 model completi
 
 ## Introduction
 
-When a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer; others are scaffolding the model would happily swap for something else if it ran again. Telling these apart is useful — for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
+When a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer, while others are just ad-hoc explanations that could be interchanged or skipped if it ran again. Telling these apart is useful for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
 
 Macar et al. made this precise with a metric called **thought resilience**. The idea is to interpret a reasoning model not as producing one CoT, but as defining a *distribution* over many possible ones. To measure how committed the model is to a given sentence, you truncate the chain just before that sentence, let the model continue from that prefix, and check whether a semantically similar sentence comes back. Do it twenty times and count the reappearances. A sentence that keeps returning is resilient — the model insists on it. One that rarely returns is fragile.
 
