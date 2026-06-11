@@ -6,20 +6,20 @@ excerpt: "Measuring which reasoning steps matter usually takes 20 model completi
 
 ## TL;DR
 
-- **The problem:** Macar et al. introduced thought resilience, a metric measuring how chain-of-thought sentences are likely to appear (a metric called *thought resilience*) needs at least 20 model completions per sentence, which is to expensive.
-- **The idea:** Test whether resilience is already encoded in the model's activations, so a single forward pass through a linear probe could replace the 20 completions, massively speeding up the process.
-- **The result:** On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
-- **The interesting part:** Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for surface word patterns.
-- **The honest caveats:** I never ran a bag-of-words baseline to rule out surface features, and I probed *resilience* (how stubborn a thought is) when *counterfactual importance* (how much it drives the answer) is the more useful signal.
-- **Next step:** Steer the model along the learned resilience direction and see if its reasoning changes — the test of whether the direction is causal, not just correlated.
+- [Macar et al.](https://arxiv.org/abs/2510.27484) introduced thought resilience, a metric measuring how chain-of-thought (CoT) sentences are likely to reappear downstream when you resample CoTs. This is expensive as it requires at least 20 model completions per sentence.
+- I wanted to test whether resilience is linearly encoded in the model's activations. If it does, we can just run a  forward pass through a linear probe to predict this metric.
+- On clear-cut cases the probe hits ~75% accuracy on average (peaking ~79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real but not yet good enough to replace resampling.
+- Accuracy is worst at the input layer and rises toward the middle of the network. This means the probe might be catching on some linear feature of the model instead of searching for simple word patterns.
+- [Macar et al.](https://arxiv.org/abs/2510.27484) also introduced Counterfactual Importance++, which measures how much a CoT causally drives the final output. I should've measured this metric instead of resilience, and would love to explore this in the future.
+- For my next steps, I will run a bag-of-words baseline to see if the linear probe is using surface features or not,  and examine the model's reasoning after steering the model along the learned resilience direction to verify the direction is causal, not just correlated.
 
 ---
 
-## The question that started it
+## Introduction
 
-When a reasoning model writes out a chain-of-thought, the sentences are not equally important. Some genuinely shape the final answer; others are scaffolding the model would happily swap for something else if it ran again. Telling these apart is useful — for understanding how a model reasons, and eventually for deciding which parts of a chain-of-thought you can trust as reflecting real computation.
+When a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer; others are scaffolding the model would happily swap for something else if it ran again. Telling these apart is useful — for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
 
-Macar et al. made this precise with a metric called **thought resilience**. The idea is to interpret a reasoning model not as producing one chain-of-thought, but as defining a *distribution* over many possible ones. To measure how committed the model is to a given sentence, you truncate the chain just before that sentence, let the model continue from that prefix, and check whether a semantically similar sentence comes back. Do it twenty times and count the reappearances. A sentence that keeps returning is resilient — the model insists on it. One that rarely returns is fragile.
+Macar et al. made this precise with a metric called **thought resilience**. The idea is to interpret a reasoning model not as producing one CoT, but as defining a *distribution* over many possible ones. To measure how committed the model is to a given sentence, you truncate the chain just before that sentence, let the model continue from that prefix, and check whether a semantically similar sentence comes back. Do it twenty times and count the reappearances. A sentence that keeps returning is resilient — the model insists on it. One that rarely returns is fragile.
 
 The catch is in that word *twenty*. Scoring one sentence costs twenty completions; scoring a whole trace costs that for every sentence in it. It is a powerful analysis tool and a hopeless live diagnostic — far too slow to run while a model is actually thinking.
 
