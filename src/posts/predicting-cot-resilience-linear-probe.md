@@ -5,33 +5,33 @@ date: "2026-05-18"
 
 ## TL;DR
 
-- Macar et al.[^1] introduced **thought resilience**, a metric for how persistent a chain-of-thought (CoT) sentence is. It works by repeatedly intervening: removing the sentence, resampling, then re-removing it wherever it reappears, until no semantically similar sentence comes back. The score is the number of interventions a sentence survives.
-- I wanted to test whether resilience is **linearly encoded in the model's residual activations**, so that a single forward pass through a linear probe could predict it instead of running ~20 completions.
-- I have to admit a mistake up front. Macar's resilience is a property of a multi-step intervention chain, where each step changes the model's activations. That makes it a poor fit for a probe, which reads one activation from one fixed state. What I actually measured is a simpler, fixed-prefix metric I'll call **thought reappearance**: fix the preceding sentences, resample the current one 20 times, and add 1 each time at least one resample clears 0.75 cosine similarity with the original. So I did not replicate Macar's resilience. I measured a related but distinct quantity.
+- Macar et al.[^1] introduced thought resilience, a metric for how persistent a chain-of-thought (CoT) sentence is. It works by removing the sentence, resampling, then re-removing it wherever it reappears, until no semantically similar sentence comes back. The score is the number of interventions, or the number of times the sentence was removed.
+- I wanted to test whether resilience is linearly encoded in the model's residual activations, so that a single forward pass through a linear probe could predict it instead of running ~20 completions.
+- I did not replicate Macar's resilience, but measured a related yet distinct quantity. Macar's resilience is a property of a multi-step intervention chain, where each step changes the model's activations. That makes it a poor fit for a probe, which reads one activation from one fixed state. What I actually measured is a simpler, fixed-prefix metric I'll call thought reappearance. For each run, it fixes the preceding sentences, resamples the current one 20 times, and adds 1 each time at least one resample exceeds 0.75 cosine similarity threshold with the original. 
 - On clear-cut cases the probe hits ~75% accuracy on average (peaking around 79% at Layer 13), but on the full distribution it drops to ~63%, close to guessing. The signal is real, just not good enough yet to replace resampling.
 - Accuracy is worst at the input layer and rises toward the middle of the network, which is weak evidence that the probe reads a computed feature rather than surface word patterns.
-- Macar et al.[^1] also introduced Counterfactual Importance++, which measures how much a CoT *causally drives* the final output. That's arguably the metric worth predicting cheaply, and I'd like to explore it next.
-- Next steps: run a bag-of-words baseline to test for surface features; correlate my reappearance metric against Macar's actual resilience on a subset to see whether the distinction even matters; and steer the model along the learned direction to test whether it's causal.
+- Macar et al.[^1] also introduced Counterfactual Importance++, which measures how much a CoT causally drives the final output. That's arguably the metric worth predicting cheaply, and I'd like to explore it next.
+- My next steps would be to run a bag-of-words baseline to test for surface features, perform a test on a subset to see if my reappearance metric correlates with Macar's actual resilience, and steer the model along the learned direction to test whether it's causal.
 
 ---
 
 ## Introduction
 
-Macar et al.[^1] observed that when a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer; others are ad-hoc explanations the model would happily swap or skip on a rerun. Telling these apart is useful for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
+Macar et al.[^1] observed that when a reasoning model writes out a CoT, the sentences are not equally important. Some genuinely shape the final answer, while others are ad-hoc explanations the model would swap or skip on a rerun. Telling these apart is useful for understanding how a model reasons, and eventually for deciding which parts of a CoT you can trust as reflecting real computation.
 
-Their paper makes this precise with **thought resilience**. The idea is to interpret a reasoning model not as producing one CoT, but as defining a distribution over many possible ones. To score a sentence S_i, you truncate the chain just before it and let the model continue from that prefix. If a semantically similar sentence comes back, you remove the CoT starting from the closest match and resample again. You repeat until no similar sentence reappears, and the resilience score is the number of interventions it took. A sentence that keeps returning is resilient; one that rarely returns is fragile.
+Their paper makes this precise with thought resilience. The idea is to interpret a reasoning model not as producing one CoT, but as defining a distribution over many possible ones. To score a sentence S_i, you truncate the chain just before it and let the model continue from that prefix. If a semantically similar sentence comes back, you remove the CoT starting from the closest match and resample again. You repeat until no similar sentence reappears, and the resilience score is the number of interventions it took. More resilient sentences will have higher scores, and vice versa.
 
-I wanted to know whether thought resilience is **linearly encoded in a model's residual activations**: whether the model "knows," at the moment it writes a sentence, that the sentence is load-bearing. If it does, a cheap linear probe over one forward pass could approximate a metric that otherwise costs ~20 completions per sentence. That's a roughly 20× speedup, and the difference between an offline analysis tool and a live diagnostic.
+I wanted to know whether thought resilience is linearly encoded in a model's residual activations: whether the model "knows," at the moment it writes a sentence, that the sentence is load-bearing. If it does, a cheap linear probe over one forward pass could approximate a metric that otherwise costs ~20 completions per sentence.
 
 ### What I actually measured (and the mistake behind it)
 
-Here's the honest part. I set out to replicate Macar's resilience and only later realized I'd measured something different. Their metric is sequential: each intervention removes the sentence and resamples, and each step is scored on a *different* prefix, the one where the previous version was suppressed. The resilience score is therefore a property of a whole chain of interventions across *changing* activations, not of any single model state.
+I initially set out to replicate Macar's resilience and only later realized I'd measured something different. Their metric is sequential because each intervention removes the sentence and resamples, and each step is scored on a different prefix, the one where the sentence in previous version was suppressed. The resilience score is therefore dependent on a chain of interventions across changing activations, not of any single model state.
 
-That's a bad target for a linear probe. A probe reads one activation vector from one fixed prefix. There is no single moment where "survived 4 sequential suppressions" lives in the residual stream, because steps 2–4 happen in states the model hasn't reached yet when I take my reading. Target and input don't line up.
+That's a bad target for a linear probe. A probe reads one activation vector from one fixed prefix. There is no single moment where "survived 4 sequential suppression" lives in the residual stream, because steps 2–4 happen in states the model hasn't reached yet when I measure the score. The target and input don't line up.
 
-What I actually measured is a fixed-prefix variant I'll call **thought reappearance**: I hold the preceding sentences constant, resample the current sentence 20 independent times, and count how often a resampled sentence clears 0.75 cosine similarity with the original. Every example is scored from the *same* original prefix (exactly one model state), which is the right kind of target for a single-activation probe. It's also trivially parallelizable, since the 20 resamples are independent rather than a serial loop.
+What I actually measured is a fixed-prefix variant I'll call thought reappearance. I hold the preceding sentences constant, resample the current sentence 20 times independently, and count how often a resampled sentence clears 0.75 cosine similarity with the original. Every example is scored from the same original prefix, which is the right kind of target for a single-activation probe. It's also easy to parallelize, since the 20 resamples are independent rather than a serial loop.
 
-So to be clear: this is not Macar's resilience. It's a simpler measure of "given this fixed context, how probable is this thought." I think it's the better-posed quantity for probing, but I haven't verified that the two metrics correlate, so every result below should be read as pertaining to reappearance, not resilience.
+In conclusion, this is not Macar's resilience, but a simpler measure of "given this fixed context, how probable is this thought." I think it's the better-posed quantity for probing, but I haven't verified that the two metrics correlate, so every result below should be read as pertaining to reappearance, not resilience.
 
 ### One tempting fix that doesn't work
 
@@ -43,19 +43,19 @@ The catch in all of this is still that word *twenty*. Scoring one sentence costs
 
 ## A false start (which was still useful)
 
-My first attempt used GSM8K, the standard grade-school math benchmark. It failed immediately, and instructively. Almost every sentence scored near-maximally, most ≥17 out of 20. There was no spread to classify; the labels were nearly all the same, and a probe can't separate two classes when one barely exists.
+My first attempt used GSM8K[^4], the standard grade-school math benchmark. It failed immediately, and instructively. Almost every sentence scored near-maximally, most ≥17 out of 20. There was no spread to classify; the labels were nearly all the same, and a probe can't separate two classes when one barely exists.
 
-The lesson: reappearance needs *harder* reasoning to show variance. On easy, near-deterministic problems the model has little room to reason differently on resampling, so everything looks resilient. I switched to OpenMathInstruct-1, which has more involved problems, and the score distribution opened up into a usable bimodal shape. A dead pilot that tells you why it died is still a useful pilot.
+The lesson: reappearance needs *harder* reasoning to show variance. On easy, near-deterministic problems the model has little room to reason differently on resampling, so everything looks resilient. I switched to OpenMathInstruct-1[^3], which has more involved problems, and the score distribution opened up into a usable bimodal shape. A dead pilot that tells you why it died is still a useful pilot.
 
 ## Building the pipeline
 
 With the dataset settled, the experiment had four stages.
 
-**Generate traces.** I took 35 prompts from OpenMathInstruct-1 and generated 5 completions each with Qwen3-4B (temperature 0.6, top-*p* 0.9), giving 175 reasoning chains. Splitting on punctuation produced roughly 7,000 sentences, about 40 per chain.
+**Generate traces.** I took 35 prompts from OpenMathInstruct-1 and generated 5 completions each with Qwen3-4B[^6] (temperature 0.6, top-*p* 0.9), giving 175 reasoning chains. Splitting on punctuation produced roughly 7,000 sentences, about 40 per chain.
 
-**Score reappearance.** For each sentence, I rebuilt the prefix (the question plus all reasoning up to but not including that sentence), generated a fresh continuation, and compared each new sentence to the original using cosine similarity from the `all-MiniLM-L6-v2` embedding model. If any new sentence cleared a 0.75 similarity threshold, the sentence scored a hit. Twenty resamples gave a 0–20 score. (The 0.75 threshold is a design choice I didn't ablate, more on that later.)
+**Score reappearance.** For each sentence, I rebuilt the prefix (the question plus all reasoning up to but not including that sentence), generated a fresh continuation, and compared each new sentence to the original using cosine similarity from the `all-MiniLM-L6-v2`[^7] embedding model. If any new sentence cleared a 0.75 similarity threshold, the sentence scored a hit. Twenty resamples gave a 0–20 score. (The 0.75 threshold is a design choice I didn't ablate, more on that later.)
 
-**Extract activations.** Using TransformerLens, I hooked Qwen3-4B's residual stream and, for each sentence, ran a single forward pass over its prefix and grabbed the last-token activation from all 36 layers. That gave 36 matrices of shape (≈7,000, 2560).
+**Extract activations.** Using TransformerLens[^5], I hooked Qwen3-4B's residual stream and, for each sentence, ran a single forward pass over its prefix and grabbed the last-token activation from all 36 layers. That gave 36 matrices of shape (≈7,000, 2560).
 
 **Train the probes.** For each layer independently: standardize, reduce to 200 PCA components, then fit an L2-regularized logistic regression. Sentences were labeled resilient if they scored ≥5/20. I also built a stricter set of *extreme* cases (scores 0–3 versus 18–20) to see how cleanly the probe separates the obvious examples.
 
@@ -74,7 +74,7 @@ A check on the learned direction was reassuring. Projecting sentences onto the p
 > *"Wait, but just to make sure there's no trick or anything…"*
 > *"But maybe the question is a trick question?"*
 
-The most resilient were concrete computation: arithmetic, problem setup, final answers. This lines up with the Thought Anchors work, which found that uncertainty-management steps are the least influential on the final answer. The correlation between true reappearance score and projection onto the direction was r ≈ 0.42, moderate but enough to suggest the direction captures an ordinal property, not just a binary split.
+The most resilient were concrete computation: arithmetic, problem setup, final answers. This lines up with the Thought Anchors work[^2], which found that uncertainty-management steps are the least influential on the final answer. The correlation between true reappearance score and projection onto the direction was r ≈ 0.42, moderate but enough to suggest the direction captures an ordinal property, not just a binary split.
 
 ## The result I didn't expect
 
@@ -84,13 +84,13 @@ Why does that shape matter? The obvious objection to this whole experiment is th
 
 But if surface features were the whole story, the *earliest* layers should do best, because lexical information is most directly available right at the input. Instead the input-adjacent layer is the worst, and the signal *builds* as the model processes the sentence, peaking in the middle third, where transformers tend to carry their most semantically rich representations. That's not proof, but it's a real hint that the probe is reading something the model computes rather than something it could read off the surface text. The honest word is *hint*, not *verdict*.
 
-The other notable thing is how flat the curve is once you're past the early layers. Unlike refusal, which prior work localizes to a narrow set of middle-layer features, this signal appears smeared across the whole network. That fits the intuition that it's a higher-order property, one that depends on the accumulated state of the entire preceding chain rather than a single localized decision.
+The other notable thing is how flat the curve is once you're past the early layers. Unlike refusal[^8], which prior work localizes to a narrow set of middle-layer features, this signal appears smeared across the whole network. That fits the intuition that it's a higher-order property, one that depends on the accumulated state of the entire preceding chain rather than a single localized decision.
 
 ## Limitations
 
 I'm treating this as a feasibility study, not a finding. The honest constraints:
 
-**I measured the wrong metric, twice over.** First, as explained in the introduction, I measured fixed-prefix *reappearance*, not Macar's sequential *resilience*. I believe reappearance is better-posed for probing, but I haven't shown the two correlate, so these results don't transfer to resilience without that check. Second, even resilience isn't the metric most worth predicting: it measures how *stubborn* a thought is, not how much it *causally drives* the final answer (Counterfactual Importance++ in the same paper). A sentence can be stubborn because the surrounding context overdetermines it, without steering the outcome. I chose reappearance for the tractability of its scoring, not because it's the most useful target.
+**I measured the wrong metric, twice over.** First, as explained in the introduction, I measured fixed-prefix *reappearance*, not Macar's sequential *resilience*. I believe reappearance is better-posed for probing, but I haven't shown the two correlate, so these results don't transfer to resilience without that check. Second, even resilience isn't the metric most worth predicting: it measures how *stubborn* a thought is, not how much it *causally drives* the final answer (Counterfactual Importance++ in the same paper[^1]). A sentence can be stubborn because the surrounding context overdetermines it, without steering the outcome. I chose reappearance for the tractability of its scoring, not because it's the most useful target.
 
 **I didn't run the dumb baseline.** The cleanest test of the surface-feature worry is a probe trained on *only* word counts and sentence length, no activations. If a bag-of-words baseline matches 75%, most of my signal was lexical and the activation story collapses. The layer curve argues around this; a five-minute baseline would settle it directly. I didn't run it.
 
