@@ -117,4 +117,11 @@ Reappearance is partly linearly encoded: enough to be worth chasing, not enough 
 The code is [here](https://github.com/Hieuuum/linear-cot). It's a feasibility study with rough edges, and the limitations section is long on purpose.
 
 ## References
-[^1]: https://arxiv.org/abs/2510.27484
+[^1]: U. Macar, P. C. Bogdan, S. Rajamanoharan, and N. Nanda. Thought Branches: Interpreting LLM Reasoning Requires Resampling. arXiv:2510.27484, 2025. https://arxiv.org/abs/2510.27484
+[^2]: P. C. Bogdan, U. Macar, N. Nanda, and A. Conmy. Thought Anchors: Which LLM Reasoning Steps Matter? arXiv:2506.19143, 2025. https://arxiv.org/abs/2506.19143
+[^3]: S. Toshniwal, I. Moshkov, S. Narenthiran, D. Gitman, F. Jia, and I. Gitman. OpenMathInstruct-1: A 1.8 Million Math Instruction Tuning Dataset. arXiv:2402.10176, 2024. https://arxiv.org/abs/2402.10176
+[^4]: K. Cobbe, V. Kosaraju, M. Bavarian, et al. Training Verifiers to Solve Math Word Problems. arXiv:2110.14168, 2021. https://arxiv.org/abs/2110.14168
+[^5]: N. Nanda and J. Bloom. TransformerLens. 2022. https://github.com/TransformerLensOrg/TransformerLens
+[^6]: A. Yang, et al. (Qwen Team). Qwen3 Technical Report. arXiv:2505.09388, 2025. https://arxiv.org/abs/2505.09388
+[^7]: N. Reimers and I. Gurevych. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. arXiv:1908.10084, 2019. https://arxiv.org/abs/1908.10084
+[^8]: A. Arditi, O. Obeso, A. Syed, D. Paleka, N. Panickssery, W. Gurnee, and N. Nanda. Refusal in Language Models Is Mediated by a Single Direction. arXiv:2406.11717, 2024. https://arxiv.org/abs/2406.11717
