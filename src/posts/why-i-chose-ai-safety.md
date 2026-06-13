@@ -10,10 +10,8 @@ When I was young, I was always mesmerized by Masterchef TV shows. It was very fu
 
 I also wanted to become an astronaut. The farthest object humans have set foot on is the Moon, which is 406,771 km (or 252,756 miles) away from Earth. Even such a long distance is infinitesimally small compared to the vastness of space. The furthest object that we've discovered is MoM-z14, about 33.8 billion light-years away. That's 3.198 × 10²³ km (or 1.987 × 10²³ miles), which is 8.319 × 10¹⁷ times the Earth-Moon distance.
 
-
+![Photo of starry sky](/images/img_4386.jpeg "Test Caption")
 
 Even now, both of these jobs still sound cool to me. However, as I grew up, I didn't want to pursue them anymore. A chef's median pay is low, while astronauts go on dangerous missions. I wanted to become a Software Engineer instead.
 
-There are many reasons why I wanted to become a SWE. The pay is high, and you 
-
-
+There are many reasons why I wanted to become a SWE. The pay is high, and you
