@@ -1,7 +1,6 @@
 ---
 title: "Why I chose AI safety"
 date: "2026-06-13"
-draft: "true"
 ---
 
 From a young age till university, there was a question that I always dodged and didn't give much thought until recently: "What do you want to do when you grow up?"
