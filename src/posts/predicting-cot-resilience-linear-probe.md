@@ -59,12 +59,11 @@ On the extreme cases, the probe reached about 75% test accuracy averaged across 
 
 ![Train and test accuracy across all 36 layers of Qwen3-4B](/img/posts/predicting-cot-resilience-linear-probe/layer_acc.png)
 
-Checking the learned direction by projecting sentences onto the probe's direction, the extremes matched intuition. The least resilient sentences were hedges and second-guessing:
+Checking the learned direction by projecting sentences onto the probe's direction shows that the least resilient sentences were hedges and second-guessing:
+- *"Wait, but just to make sure there's no trick or anything…"*
+- *"But maybe the question is a trick question?"*
 
-> *"Wait, but just to make sure there's no trick or anything…"*
-> *"But maybe the question is a trick question?"*
-
-The most resilient were concrete computation: arithmetic, problem setup, final answers. This lines up with the Thought Anchors work[^2], which found that uncertainty-management steps are the least influential on the final answer. The correlation between true reappearance score and projection onto the direction was r ≈ 0.42, moderate but enough to suggest the direction captures an ordinal property, not just a binary split.
+On the other hand, the most resilient were concrete computation, such as arithmetic, problem setup, and final answers. This lines up with the Thought Anchors work[^2], which found that uncertainty-management steps are the least influential on the final answer. The correlation between true reappearance score and projection onto the direction was r ≈ 0.42, moderate but enough to suggest the direction captures an ordinal property, not just a binary split.
 
 ## The result I didn't expect
 
