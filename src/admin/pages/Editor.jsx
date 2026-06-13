@@ -64,7 +64,7 @@ async function downscaleImage(file) {
 
 function Preview({ content }) {
   return (
-    <div className="prose prose-slate dark:prose-invert max-w-none">
+    <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}

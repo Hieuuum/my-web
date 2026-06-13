@@ -6,6 +6,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        sfpro: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'serif'],
       },
       typography: {
         DEFAULT: {

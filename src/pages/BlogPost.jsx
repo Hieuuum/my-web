@@ -55,14 +55,14 @@ export default function BlogPost() {
         ← Writing
       </Link>
       <header className="mb-12">
-        <h1 className="text-3xl font-semibold text-slate-900 dark:text-zinc-100 leading-snug mb-3">
+        <h1 className="font-sfpro text-3xl font-semibold text-slate-900 dark:text-zinc-100 leading-snug mb-3">
           {post.data.title}
         </h1>
         <p className="text-sm text-slate-500 dark:text-zinc-400">
           {post.data.date}
         </p>
       </header>
-      <div className="prose prose-slate dark:prose-invert max-w-none">
+      <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}

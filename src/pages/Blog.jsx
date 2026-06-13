@@ -11,7 +11,7 @@ export default function Blog() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 pt-20 pb-16">
-      <h1 className="text-3xl font-semibold text-slate-900 dark:text-zinc-100 mb-2">
+      <h1 className="font-sfpro text-3xl font-semibold text-slate-900 dark:text-zinc-100 mb-2">
         Writing
       </h1>
       <p className="text-slate-600 dark:text-zinc-300 mb-3">
@@ -35,7 +35,7 @@ export default function Blog() {
             <li key={post.slug} className="py-7">
               <Link to={`/blog/${post.slug}`} className="group block">
                 <div className="flex items-baseline justify-between gap-4 mb-1">
-                  <h2 className="text-lg font-medium text-slate-900 dark:text-zinc-100 group-hover:text-slate-700 dark:group-hover:text-zinc-300 transition-colors">
+                  <h2 className="font-sfpro text-lg font-medium text-slate-900 dark:text-zinc-100 group-hover:text-slate-700 dark:group-hover:text-zinc-300 transition-colors">
                     {post.data.title}
                   </h2>
                   <span className="text-sm text-slate-500 dark:text-zinc-400 shrink-0">
@@ -43,7 +43,7 @@ export default function Blog() {
                   </span>
                 </div>
                 {post.data.excerpt && (
-                  <p className="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                  <p className="font-sfpro text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
                     {post.data.excerpt}
                   </p>
                 )}
