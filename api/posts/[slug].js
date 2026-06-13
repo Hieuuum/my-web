@@ -1,6 +1,7 @@
 import { requireAuth } from "../_lib/auth.js";
-import { getFile, putFile, deleteFile, ConflictError } from "../_lib/github.js";
+import { getFile, putFile, deleteFile, listDir, getBlob, ConflictError } from "../_lib/github.js";
 import { parseFrontmatter, buildMarkdown, validateSlug } from "../_lib/posts.js";
+import { rewriteImageRefs, postImageDir, postImageRepoPath } from "../_lib/images.js";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -49,9 +50,10 @@ async function handlePut(req, res, slug) {
     return res.status(400).json({ error: "Invalid renameFrom slug" });
   }
 
+  const bodyContent = (renameFrom && renameFrom !== slug) ? rewriteImageRefs(content || "", renameFrom, slug) : (content || "");
   const markdown = buildMarkdown(
     { title, date, excerpt: excerpt || "", draft: draft === true },
-    content || ""
+    bodyContent
   );
   const base64Content = Buffer.from(markdown, "utf8").toString("base64");
 
@@ -86,6 +88,21 @@ async function handlePut(req, res, slug) {
           }
           throw deleteErr;
         }
+      }
+    }
+
+    if (renameFrom && renameFrom !== slug) {
+      try {
+        const oldDir = postImageDir(renameFrom);
+        const entries = await listDir(oldDir);
+        for (const entry of entries) {
+          if (entry.type !== "file") continue;
+          const base64 = await getBlob(entry.sha);
+          await putFile(postImageRepoPath(slug, entry.name), base64, `Move image: ${entry.name}`);
+          await deleteFile(`${oldDir}/${entry.name}`, `Delete moved image: ${entry.name}`, entry.sha);
+        }
+      } catch (moveErr) {
+        console.error(`Image folder move failed (${renameFrom} -> ${slug}):`, moveErr);
       }
     }
 

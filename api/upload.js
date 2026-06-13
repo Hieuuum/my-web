@@ -1,6 +1,8 @@
 import { randomBytes } from "node:crypto";
 import { requireAuth } from "./_lib/auth.js";
 import { getFile, putFile } from "./_lib/github.js";
+import { validateSlug } from "./_lib/posts.js";
+import { postImageRepoPath, postImageUrl } from "./_lib/images.js";
 
 const ALLOWED_EXTS = new Set(["png", "jpg", "jpeg", "gif", "webp", "svg"]);
 const MAX_BYTES = 4 * 1024 * 1024; // 4MB
@@ -23,9 +25,12 @@ export default async function handler(req, res) {
   }
   if (!requireAuth(req, res)) return;
 
-  const { filename, dataBase64 } = req.body || {};
+  const { filename, dataBase64, slug } = req.body || {};
   if (!filename || !dataBase64) {
     return res.status(400).json({ error: "filename and dataBase64 required" });
+  }
+  if (!slug || !validateSlug(slug)) {
+    return res.status(400).json({ error: "valid slug required" });
   }
 
   // Validate extension
@@ -48,7 +53,7 @@ export default async function handler(req, res) {
   }
 
   // Check for collision and add random prefix if needed
-  const path = `public/images/${safeName}`;
+  const path = postImageRepoPath(slug, safeName);
   const existing = await getFile(path).catch(() => null);
   let finalName = safeName;
   if (existing) {
@@ -56,7 +61,7 @@ export default async function handler(req, res) {
     finalName = `${prefix}-${safeName}`;
   }
 
-  const finalPath = `public/images/${finalName}`;
+  const finalPath = postImageRepoPath(slug, finalName);
   try {
     await putFile(finalPath, dataBase64, `Upload image: ${finalName}`, undefined);
   } catch (err) {
@@ -64,5 +69,5 @@ export default async function handler(req, res) {
     return res.status(502).json({ error: "Failed to upload image" });
   }
 
-  return res.status(200).json({ url: `/images/${finalName}` });
+  return res.status(200).json({ url: postImageUrl(slug, finalName) });
 }

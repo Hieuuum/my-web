@@ -78,7 +78,7 @@ export default function Home() {
             aria-label="Hieu"
             className="w-40 sm:w-52 md:w-56 aspect-square rounded-md order-first md:order-none bg-no-repeat"
             style={{
-              backgroundImage: "url('/img/IMG_7106.JPG')",
+              backgroundImage: "url('/images/IMG_7106.JPG')",
               backgroundSize: "260%",
               backgroundPosition: "61% 59%",
             }}

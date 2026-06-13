@@ -50,6 +50,6 @@ export const api = {
   savePost: (slug, body) => request("PUT", `/api/posts/${slug}`, body),
   deletePost: (slug, sha) => request("DELETE", `/api/posts/${slug}`, { sha }),
 
-  upload: (filename, dataBase64) =>
-    request("POST", "/api/upload", { filename, dataBase64 }),
+  upload: (filename, dataBase64, slug) =>
+    request("POST", "/api/upload", { filename, dataBase64, slug }),
 };

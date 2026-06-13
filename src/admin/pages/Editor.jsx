@@ -213,6 +213,7 @@ function handleEditorKeyDown(e, onChange) {
 export default function Editor() {
   const { slug: routeSlug } = useParams();
   const isNew = !routeSlug;
+  const canUploadImages = !isNew; // images need a saved post folder /images/posts/{slug}/
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -484,7 +485,7 @@ export default function Editor() {
       reader.onload = async (e) => {
         const dataBase64 = e.target.result.split(",")[1];
         try {
-          const result = await api.upload(file.name, dataBase64);
+          const result = await api.upload(file.name, dataBase64, routeSlug);
           resolve(result.url);
         } catch (err) {
           setError("Image upload failed.");
@@ -509,6 +510,10 @@ export default function Editor() {
   }
 
   async function handleImageToolbar() {
+    if (!canUploadImages) {
+      setError("Save the post first, then add images.");
+      return;
+    }
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -527,6 +532,10 @@ export default function Editor() {
     for (const item of items) {
       if (item.type.startsWith("image/")) {
         e.preventDefault();
+        if (!canUploadImages) {
+          setError("Save the post first, then add images.");
+          return;
+        }
         const file = item.getAsFile();
         const url = await uploadImage(file);
         if (url) insertAtCursor(`![](${url})`);
@@ -539,6 +548,10 @@ export default function Editor() {
     e.preventDefault();
     const file = e.dataTransfer?.files[0];
     if (!file) return;
+    if (!canUploadImages) {
+      setError("Save the post first, then add images.");
+      return;
+    }
     const url = await uploadImage(file);
     if (url) insertAtCursor(`![](${url})`);
   }
@@ -634,7 +647,9 @@ export default function Editor() {
             <button
               type="button"
               onClick={handleImageToolbar}
-              className="text-base text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono"
+              disabled={!canUploadImages}
+              title={canUploadImages ? "Insert image" : "Save the post first to add images"}
+              className="text-base text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white/70 transition-colors px-1.5 py-1 font-mono disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Image
             </button>

@@ -58,7 +58,7 @@ I split train and test by prompt, not by sentence, making every prompt land on o
 
 On the extreme cases, the probe reached about 75% test accuracy averaged across layers, peaking at 79% at Layer 13 with ≈ 0.793 AUC. So reappearance might be linearly readable from a single forward pass, which was an encouraging result. However, once the ambiguous middle scores 4–17 was included, accuracy fell to about 63%, which isn't surprising considering it was trained on extreme cases. 
 
-![Train and test accuracy across all 36 layers of Qwen3-4B](/img/posts/predicting-cot-resilience-linear-probe/layer_acc.png)
+![Train and test accuracy across all 36 layers of Qwen3-4B](/images/posts/predicting-cot-resilience-linear-probe/layer_acc.png)
 
 Checking the learned direction by projecting sentences onto the probe's direction shows that the least resilient sentences were hedges and second-guessing:
 - *"Wait, but just to make sure there's no trick or anything…"*

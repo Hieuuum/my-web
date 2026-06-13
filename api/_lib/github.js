@@ -76,6 +76,15 @@ export async function putFile(path, base64Content, message, sha) {
   return { sha: data.content.sha };
 }
 
+export async function getBlob(sha) {
+  const { repo, token } = getConfig();
+  const url = `${BASE}/repos/${repo}/git/blobs/${sha}`;
+  const res = await fetch(url, { headers: headers(token) });
+  if (!res.ok) throw new Error(`GitHub getBlob failed: ${res.status}`);
+  const data = await res.json();
+  return data.content.replace(/\n/g, "");
+}
+
 export async function deleteFile(path, message, sha) {
   const { repo, branch, token } = getConfig();
   const url = `${BASE}/repos/${repo}/contents/${path}`;
