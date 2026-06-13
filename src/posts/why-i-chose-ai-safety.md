@@ -14,4 +14,6 @@ I also wanted to become an astronaut. The farthest object humans have set foot o
 
 Even now, both of these jobs still sound cool to me. However, as I grew up, I didn't want to pursue them anymore. A chef's median pay is low, while astronauts go on dangerous missions. I wanted to become a Software Engineer instead.
 
-There are many reasons why I wanted to become a SWE. The pay is high, and you
+There are many reasons why I wanted to become a SWE. I thought the pay was high. I thought you also get to work on interesting problems because every SWE role requires doing LeetCode-styled problems, which requires a good understanding of data structures.
+
+However, I also realized this also isn't sustainable.
