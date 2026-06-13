@@ -92,11 +92,8 @@ In rough order of how much they'd change my confidence:
 5. **Steer along the learned direction**: add or subtract it in the residual stream and watch whether later reasoning changes. A positive result is the line between an interesting probe and a lever you can actually pull.
 6. **Scale and transfer**: 500–1,000 prompts across MATH, MMLU-Pro, and HumanEval to close the train–test gap, plus identical probes on other models (e.g. LLaMA-3-8B, Mistral-7B, Qwen3-30B-A3B) to test whether the direction is general or specific to Qwen3-4B.
 
-## Where this leaves things
 
-Reappearance is partly linearly encoded: enough to be worth chasing, not enough to deploy. The 20× speedup that motivated the study doesn't hold yet, since at 63% full-distribution accuracy the probe can't replace resampling. The most defensible near-term framing is narrower: flag *likely-fragile* sentences for targeted resampling, which reduces completions rather than eliminating them. And the headline caveat is the one I'd most want a reader to leave with. I measured a fixed-prefix proxy, not the metric I set out to replicate, and closing that gap is the first thing I'll do next.
-
-The code is [here](https://github.com/Hieuuum/linear-cot). It's a feasibility study with rough edges, and the limitations section is long on purpose.
+The code can be found [here](https://github.com/Hieuuum/linear-cot).
 
 ## References
 [^1]: U. Macar, P. C. Bogdan, S. Rajamanoharan, and N. Nanda. Thought Branches: Interpreting LLM Reasoning Requires Resampling. arXiv:2510.27484, 2025. https://arxiv.org/abs/2510.27484
