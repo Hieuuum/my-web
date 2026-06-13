@@ -1,6 +1,7 @@
 ---
 title: "Predicting Chain-of-Thought Resilience with a Linear Probe"
 date: "2026-05-18"
+excerpt: "Can linear probes detect if models are committed to a CoT?"
 ---
 
 ## TL;DR
