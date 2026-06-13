@@ -93,10 +93,8 @@ In rough order of how much they'd change my confidence:
 5. **Steer along the learned direction** by adding or subtracting it in the residual stream and watch whether later reasoning changes.
 6. **Scale and transfer**: 500–1,000 prompts across MATH, MMLU-Pro, and HumanEval to close the train–test gap, plus identical probes on other models (e.g. LLaMA-3-8B, Mistral-7B, Qwen3-30B-A3B) to test whether the direction is general or specific to Qwen3-4B.
 
-
 The code can be found [here](https://github.com/Hieuuum/linear-cot).
 
-## References
 [^1]: U. Macar, P. C. Bogdan, S. Rajamanoharan, and N. Nanda. Thought Branches: Interpreting LLM Reasoning Requires Resampling. arXiv:2510.27484, 2025. https://arxiv.org/abs/2510.27484
 [^2]: P. C. Bogdan, U. Macar, N. Nanda, and A. Conmy. Thought Anchors: Which LLM Reasoning Steps Matter? arXiv:2506.19143, 2025. https://arxiv.org/abs/2506.19143
 [^3]: S. Toshniwal, I. Moshkov, S. Narenthiran, D. Gitman, F. Jia, and I. Gitman. OpenMathInstruct-1: A 1.8 Million Math Instruction Tuning Dataset. arXiv:2402.10176, 2024. https://arxiv.org/abs/2402.10176
