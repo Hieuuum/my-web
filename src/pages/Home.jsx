@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       {/* About */}
-      <section id="about" className="max-w-4xl mx-auto px-6 pt-24 pb-16">
+      <section id="about" className="max-w-3xl mx-auto px-6 pt-24 pb-16">
         <div className="grid md:grid-cols-[1fr_auto] gap-10 md:gap-12 items-start">
           <div>
             <h1 className="mb-8">
