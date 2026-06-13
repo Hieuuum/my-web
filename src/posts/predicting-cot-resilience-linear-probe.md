@@ -53,7 +53,7 @@ The experiment had five stages.
 
 I split train and test by prompt, not by sentence, making every prompt land on one side of the split. Sentences from the same trace are correlated, so if they leak across the split, test accuracy might be inflated and useless. 
 
-## What the probe found
+## Results
 
 On the extreme cases, the probe reached about 75% test accuracy averaged across layers, peaking at 79% at Layer 13 with ≈ 0.793 AUC. So reappearance might be linearly readable from a single forward pass, which was an encouraging result. However, once the ambiguous middle scores 4–17 was included, accuracy fell to about 63%, which isn't surprising considering it was trained on extreme cases. 
 
@@ -65,27 +65,19 @@ Checking the learned direction by projecting sentences onto the probe's directio
 
 On the other hand, the most resilient were concrete computation, such as arithmetic, problem setup, and final answers. This lines up with the Thought Anchors work[^2], which found that uncertainty-management steps are the least influential on the final answer. The correlation between true reappearance score and projection onto the direction was r ≈ 0.42, moderate but enough to suggest the direction captures an ordinal property, not just a binary split.
 
-## The result I didn't expect
+Accuracy was lowest at Layer 0, then rose to a peak in the middle of the network before fluctuating towards the end. Why does that shape matter? The probe might not be reading reappearance, but surface features like hedging vocabulary ("Wait, maybe…") and sentence length. However, if that was the case, the earliest layers should do the best, because lexical information is mostly available in the input. Instead the first layer is the worst, and the signal builds as the model processes the sentence, peaking in the middle third, where transformers tend to carry their most semantically rich representations. That suggests that the probe might be reading something from the model's computations rather than surface features.
 
-The part that stuck with me: the probe worked at roughly every layer, but not *exactly* equally. Accuracy was lowest at Layer 0, the representation closest to the raw input tokens (69%), then rose to a peak in the middle of the network before flattening out.
-
-Why does that shape matter? The obvious objection to this whole experiment is that the probe might not be reading "reappearance" at all. It might be reading surface features like hedging vocabulary and sentence length. "Wait, maybe…" is lexically obvious, and a classifier can exploit that without understanding anything deep.
-
-But if surface features were the whole story, the *earliest* layers should do best, because lexical information is most directly available right at the input. Instead the input-adjacent layer is the worst, and the signal *builds* as the model processes the sentence, peaking in the middle third, where transformers tend to carry their most semantically rich representations. That's not proof, but it's a real hint that the probe is reading something the model computes rather than something it could read off the surface text. The honest word is *hint*, not *verdict*.
-
-The other notable thing is how flat the curve is once you're past the early layers. Unlike refusal[^8], which prior work localizes to a narrow set of middle-layer features, this signal appears smeared across the whole network. That fits the intuition that it's a higher-order property, one that depends on the accumulated state of the entire preceding chain rather than a single localized decision.
+The other notable thing is how fluctuating the curve is once you're past the early layers. Unlike refusal[^8], which prior work localizes to a narrow set of middle-layer features, this signal appears smeared across the whole network. That fits the intuition that it's a higher-order property, one that depends on the accumulated state of the entire preceding chain rather than a single localized decision.
 
 ## Limitations
 
-I'm treating this as a feasibility study, not a finding. The honest constraints:
+**I measured the wrong metric twice.** First, as explained in the introduction, I measured fixed-prefix reappearance, not Macar's sequential resilience. I believe reappearance is better for probing, but I haven't shown the two correlate, so these results don't transfer to resilience without that check. Second, even resilience isn't the metric most worth predicting because it measures how stubborn a thought is, while Counterfactual Importance++ in the same paper[^1] measures how much a sentence causally drives the final answer. A sentence can be stubborn without steering the outcome because the surrounding context forces it. I chose reappearance for the tractability of its scoring, not because it's the most useful target.
 
-**I measured the wrong metric, twice over.** First, as explained in the introduction, I measured fixed-prefix *reappearance*, not Macar's sequential *resilience*. I believe reappearance is better-posed for probing, but I haven't shown the two correlate, so these results don't transfer to resilience without that check. Second, even resilience isn't the metric most worth predicting: it measures how *stubborn* a thought is, not how much it *causally drives* the final answer (Counterfactual Importance++ in the same paper[^1]). A sentence can be stubborn because the surrounding context overdetermines it, without steering the outcome. I chose reappearance for the tractability of its scoring, not because it's the most useful target.
+**I didn't run the baseline.** The cleanest test of the surface-feature worry is a probe trained on only word counts and sentence length, no activations. If a bag-of-words baseline matches 75%, then the probe was reading lexical features instead of the model's activations.
 
-**I didn't run the dumb baseline.** The cleanest test of the surface-feature worry is a probe trained on *only* word counts and sentence length, no activations. If a bag-of-words baseline matches 75%, most of my signal was lexical and the activation story collapses. The layer curve argues around this; a five-minute baseline would settle it directly. I didn't run it.
+**Scale and domain.** The experiment was only performed on Qwen3-4B with 35 math prompts, so it might not generalize to other models or domains. The deterministic computation and well-defined intermediate states in math may make the property easier to encode than elsewhere.
 
-**Scale and domain.** One model (Qwen3-4B), one domain (math), 35 prompts. I don't know whether any of this generalizes to other models, to code or commonsense reasoning, or to messier domains where the signal might be harder to encode linearly. Math is also unusually clean (deterministic computation, well-defined intermediate states), which may make the property easier to encode than elsewhere.
-
-**Correlational, not causal.** I show the property is linearly *decodable*, not that the model causally *uses* the direction. Without intervening on the residual stream, I can't rule out that the probe rides on correlated surface features.
+**Correlational, not causal.** I show the property is linearly decodable, not that the model causally uses the direction. Without intervening on the residual stream, I can't rule out that the probe rides on correlated surface features.
 
 **Unablated threshold.** The 0.75 cosine threshold shapes the label distribution and I didn't ablate it.
 
