@@ -79,17 +79,18 @@ The other notable thing is how fluctuating the curve is once you're past the ear
 
 **Correlational, not causal.** I show the property is linearly decodable, not that the model causally uses the direction. Without intervening on the residual stream, I can't rule out the probability that the probe uses correlated surface features.
 
-**Unablated threshold.** I didn't ablate the 0.75 cosine threshold, which shapes the label distribution. Varying this threshold changes the distribution of resilience score, affecting the number of resilient and non-resilient sentences. This might also affect the train/test accuracy and layer curve. I will run more experiments to verify this.
+**Unablated threshold.** I didn't ablate the 0.75 cosine threshold, which shapes the label distribution. Varying this threshold changes the distribution of resilience score, affecting the number of resilient and non-resilient sentences. This might also affect the train/test accuracy and layer curve.
 
 ## Next steps
 
 In rough order of how much they'd change my confidence:
 
-1. **Correlate reappearance with Macar's actual resilience** on a small subset (~50 sentences). If they correlate at r > 0.8, the metric distinction is academic and the results stand in for resilience. If they don't, that's itself a finding. This is the cheapest thing that resolves the central caveat, so it goes first.
+1. **Correlate reappearance with Macar's actual resilience** on a small subset of ~50 sentences. If they correlate at r > 0.8, the results holds true for resilience. If they don't, that in itself is a finding.
 2. **Run the lexical-only baseline** (word counts + sentence length) to quantify how much of the signal is surface.
-3. **Probe Counterfactual Importance++**, the metric that more directly tracks causal influence on the output, and the one a safety-relevant tool would actually want.
-4. **Steer along the learned direction**: add or subtract it in the residual stream and watch whether later reasoning changes. A positive result is the line between an interesting probe and a lever you can actually pull.
-5. **Scale and transfer**: 500–1,000 prompts across MATH, MMLU-Pro, and HumanEval to close the train–test gap, plus identical probes on other models (e.g. LLaMA-3-8B, Mistral-7B) to test whether the direction is general or specific to Qwen.
+3. **Rerun the experiment with varying cosine similarity** to see how it affects the resilience score distribution.
+4. **Probe Counterfactual Importance++**, the metric that more directly tracks causal influence on the output, and the useful one for safety-relevant tools.
+5. **Steer along the learned direction**: add or subtract it in the residual stream and watch whether later reasoning changes. A positive result is the line between an interesting probe and a lever you can actually pull.
+6. **Scale and transfer**: 500–1,000 prompts across MATH, MMLU-Pro, and HumanEval to close the train–test gap, plus identical probes on other models (e.g. LLaMA-3-8B, Mistral-7B, Qwen3-30B-A3B) to test whether the direction is general or specific to Qwen3-4B.
 
 ## Where this leaves things
 
