@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api, ApiError } from "../api";
+import { mdComponents } from "../../lib/mdComponents.jsx";
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -28,6 +29,37 @@ function localKey(slug) {
   return `admin-draft:${slug || "new"}`;
 }
 
+// ── image downscaling ──────────────────────────────────────────────────────
+// Shrink large raster images in the browser before upload so the base64
+// request body stays under the serverless ~4.5MB limit — a full-resolution
+// photo otherwise fails with HTTP 413 before the function even runs. SVG and
+// GIF pass through untouched (the canvas would destroy vector/animation).
+
+const MAX_IMAGE_DIM = 1600; // px, longest edge
+const MAX_UPLOAD_BYTES = 3.5 * 1024 * 1024; // base64 of this stays under ~4.5MB
+
+async function downscaleImage(file) {
+  if (file.type === "image/svg+xml" || file.type === "image/gif") return file;
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  } catch {
+    return file;
+  }
+  const scale = Math.min(1, MAX_IMAGE_DIM / Math.max(bitmap.width, bitmap.height));
+  if (scale === 1) {
+    bitmap.close?.();
+    return file;
+  }
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close?.();
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, file.type, 0.85));
+  return blob && blob.size < file.size ? blob : file;
+}
+
 // ── markdown preview (mirrors public BlogPost) ─────────────────────────────
 
 function Preview({ content }) {
@@ -36,6 +68,7 @@ function Preview({ content }) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
+        components={mdComponents}
       >
         {content}
       </ReactMarkdown>
@@ -441,8 +474,9 @@ export default function Editor() {
 
   async function uploadImage(file) {
     if (!file || !file.type.startsWith("image/")) return;
-    if (file.size > 4 * 1024 * 1024) {
-      setError("Image must be under 4 MB.");
+    const img = await downscaleImage(file);
+    if (img.size > MAX_UPLOAD_BYTES) {
+      setError("Image is too large to upload — try one under ~3 MB.");
       return;
     }
     return new Promise((resolve) => {
@@ -457,7 +491,7 @@ export default function Editor() {
           resolve(null);
         }
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(img);
     });
   }
 

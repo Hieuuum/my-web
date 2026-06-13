@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getPost } from "../lib/posts";
+import { mdComponents } from "../lib/mdComponents.jsx";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -65,6 +66,7 @@ export default function BlogPost() {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
+          components={mdComponents}
         >
           {post.content}
         </ReactMarkdown>
