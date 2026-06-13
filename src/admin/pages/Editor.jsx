@@ -101,6 +101,80 @@ function applyToolbar(action, textarea, onChange) {
   });
 }
 
+// ── editor key handling: wrap selections, auto-pair, type-over ──────────────
+// Code-editor-style behavior for the markdown body. With a selection, the wrap
+// keys surround it and keep it selected, so a second press nests (* → ** for
+// bold, $ → $$ for display math). With no selection, brackets/backtick/quotes
+// auto-insert their closer; * and $ type normally so lists and math aren't
+// disrupted. Quotes only auto-pair after whitespace, leaving apostrophes in
+// prose ("don't") literal. Typing a closer over an identical one skips past it;
+// backspacing an empty pair removes both halves.
+
+const WRAP_PAIRS = {
+  "*": ["*", "*"],
+  "$": ["$", "$"],
+  "`": ["`", "`"],
+  "{": ["{", "}"], "}": ["{", "}"],
+  "[": ["[", "]"], "]": ["[", "]"],
+  "(": ["(", ")"], ")": ["(", ")"],
+  '"': ['"', '"'],
+  "'": ["'", "'"],
+};
+const AUTO_PAIR = { "`": "`", "{": "}", "[": "]", "(": ")", '"': '"', "'": "'" };
+const QUOTE_GATED = new Set(['"', "'"]);
+const CLOSERS = new Set(["}", "]", ")", "`", '"', "'"]);
+
+function handleEditorKeyDown(e, onChange) {
+  if (e.metaKey || e.ctrlKey || e.altKey || e.isComposing) return;
+  const ta = e.currentTarget;
+  const { selectionStart: start, selectionEnd: end, value } = ta;
+
+  // Backspace between an empty auto-pair deletes both halves. Expanding the
+  // selection and letting the default Backspace run keeps native undo intact.
+  if (e.key === "Backspace" && start === end && start > 0) {
+    const before = value[start - 1];
+    if (AUTO_PAIR[before] && AUTO_PAIR[before] === value[start]) {
+      ta.setSelectionRange(start - 1, start + 1);
+    }
+    return;
+  }
+
+  const pair = WRAP_PAIRS[e.key];
+  if (!pair) return;
+
+  // Selection present → wrap it, keeping the original text selected inside so a
+  // second press nests the markers (* → **, $ → $$).
+  if (start !== end) {
+    const [open, close] = pair;
+    e.preventDefault();
+    insertTextUndoable(ta, open + value.slice(start, end) + close, start, end, onChange);
+    requestAnimationFrame(() => {
+      ta.focus();
+      ta.setSelectionRange(start + open.length, end + open.length);
+    });
+    return;
+  }
+
+  // No selection: type over an identical closer instead of duplicating it.
+  if (CLOSERS.has(e.key) && value[start] === e.key) {
+    e.preventDefault();
+    ta.setSelectionRange(start + 1, start + 1);
+    return;
+  }
+
+  // No selection: auto-insert the closer (brackets/backtick/quotes only — not
+  // * or $). Quotes are gated to whitespace/line-start to spare apostrophes.
+  const closer = AUTO_PAIR[e.key];
+  if (!closer) return;
+  if (QUOTE_GATED.has(e.key) && start > 0 && !/\s/.test(value[start - 1])) return;
+  e.preventDefault();
+  insertTextUndoable(ta, e.key + closer, start, start, onChange);
+  requestAnimationFrame(() => {
+    ta.focus();
+    ta.setSelectionRange(start + 1, start + 1);
+  });
+}
+
 // ── main component ─────────────────────────────────────────────────────────
 
 export default function Editor() {
@@ -705,6 +779,7 @@ export default function Editor() {
             ref={textareaRef}
             value={content}
             onChange={handleContentChange}
+            onKeyDown={(e) => handleEditorKeyDown(e, setContent)}
             onPaste={handlePaste}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
