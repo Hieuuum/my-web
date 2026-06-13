@@ -20,7 +20,5 @@ During sophomore year, AI safety caught my interest. I don't remember exactly wh
 
 I was more convinced after reading [80,000 Hours career guide](https://80000hours.org/career-guide/introduction/):
 > You have about 80,000 hours in your career: 40 hours a week, 50 weeks a year, for 40 years. This means your choice of career is the most important decision you’ll ever make.
-
-It accounts for roughly one third of your waking life as an adult — more time than you’ll spend eating, socialising, and watching Netflix put together.1 It’s long enough to walk around Earth 10 times.
-
-Choose well, and you can have a more rewarding, interesting life, and also help solve some of the world’s most pressing problems. Choose poorly, and you could waste decades.
+>It accounts for roughly one third of your waking life as an adult — more time than you’ll spend eating, socialising, and watching Netflix put together.1 It’s long enough to walk around Earth 10 times.
+>Choose well, and you can have a more rewarding, interesting life, and also help solve some of the world’s most pressing problems. Choose poorly, and you could waste decades.
