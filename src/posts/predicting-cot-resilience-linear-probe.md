@@ -90,7 +90,7 @@ In rough order of how much they'd change my confidence:
 2. **Run the lexical-only baseline** (word counts + sentence length) to quantify how much of the signal is surface.
 3. **Rerun the experiment with varying cosine similarity** to see how it affects the resilience score distribution.
 4. **Probe Counterfactual Importance++**, the metric that more directly tracks causal influence on the output, and the useful one for safety-relevant tools.
-5. **Steer along the learned direction**: add or subtract it in the residual stream and watch whether later reasoning changes. A positive result is the line between an interesting probe and a lever you can actually pull.
+5. **Steer along the learned direction** by adding or subtracting it in the residual stream and watch whether later reasoning changes.
 6. **Scale and transfer**: 500–1,000 prompts across MATH, MMLU-Pro, and HumanEval to close the train–test gap, plus identical probes on other models (e.g. LLaMA-3-8B, Mistral-7B, Qwen3-30B-A3B) to test whether the direction is general or specific to Qwen3-4B.
 
 
