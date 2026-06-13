@@ -77,9 +77,9 @@ The other notable thing is how fluctuating the curve is once you're past the ear
 
 **Scale and domain.** The experiment was only performed on Qwen3-4B with 35 math prompts, so it might not generalize to other models or domains. The deterministic computation and well-defined intermediate states in math may make the property easier to encode than elsewhere.
 
-**Correlational, not causal.** I show the property is linearly decodable, not that the model causally uses the direction. Without intervening on the residual stream, I can't rule out that the probe rides on correlated surface features.
+**Correlational, not causal.** I show the property is linearly decodable, not that the model causally uses the direction. Without intervening on the residual stream, I can't rule out the probability that the probe uses correlated surface features.
 
-**Unablated threshold.** The 0.75 cosine threshold shapes the label distribution and I didn't ablate it.
+**Unablated threshold.** I didn't ablate the 0.75 cosine threshold, which shapes the label distribution. Varying this threshold changes the distribution of resilience score, affecting the number of resilient and non-resilient sentences. This might also affect the train/test accuracy and layer curve. I will run more experiments to verify this.
 
 ## Next steps
 
