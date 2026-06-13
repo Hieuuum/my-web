@@ -12,7 +12,7 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            fontSize: "1.0625rem",
+            fontSize: "1.25rem",
             color: "#1e293b",
             a: { color: "#0f172a", textDecoration: "underline" },
             "h1,h2,h3,h4": { color: "#0f172a" },
