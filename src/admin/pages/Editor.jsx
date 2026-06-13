@@ -115,7 +115,7 @@ export default function Editor() {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [slug, setSlug] = useState("");
-  const [slugEdited, setSlugEdited] = useState(false); // user manually edited slug
+  const [slugMode, setSlugMode] = useState("auto"); // "auto" follows title | "custom" user-set
   const [isDraft, setIsDraft] = useState(true);
   // Initialise sha from navigation state when navigating to a newly-created post
   // so a fast second save doesn't run without a sha before getPost resolves.
@@ -162,6 +162,7 @@ export default function Editor() {
         setExcerpt(post.excerpt || "");
         setContent(post.content || "");
         setSlug(post.slug);
+        setSlugMode(post.slug === toSlug(post.title || "") ? "auto" : "custom");
         setIsDraft(!!post.draft);
         setSha(post.sha);
 
@@ -213,13 +214,13 @@ export default function Editor() {
     }
   }, [isNew, routeSlug, navigate]);
 
-  // ── auto-slug from title (new post, not manually edited) ────────────────
+  // ── auto-slug from title (while in auto mode) ────────────────────────────
 
   useEffect(() => {
-    if (isNew && !slugEdited) {
+    if (slugMode === "auto") {
       setSlug(toSlug(title));
     }
-  }, [title, isNew, slugEdited]);
+  }, [title, slugMode]);
 
   // ── autosave to localStorage ─────────────────────────────────────────────
 
@@ -306,6 +307,16 @@ export default function Editor() {
     }
 
     try {
+      // block save if the link is already used by another post
+      const existing = await api.getPosts();
+      if (existing.some((p) => p.slug === targetSlug && p.slug !== routeSlug)) {
+        setSaving(false);
+        const msg = `Link "/blog/${targetSlug}" is already used by another post.`;
+        setStatus(msg);
+        setError(msg);
+        return;
+      }
+
       const result = await api.savePost(targetSlug, body);
       setSha(result.sha);
       setIsDraft(asDraft);
@@ -464,8 +475,19 @@ export default function Editor() {
   // ── slug input handling ──────────────────────────────────────────────────
 
   function handleSlugChange(e) {
-    setSlug(e.target.value);
-    if (!slugEdited) setSlugEdited(true);
+    // keep custom links URL-safe: lowercase, no spaces
+    setSlug(
+      e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+    );
+  }
+
+  function toggleSlugMode() {
+    if (slugMode === "auto") {
+      setSlugMode("custom");
+    } else {
+      setSlugMode("auto");
+      setSlug(toSlug(title));
+    }
   }
 
   // ── status text ──────────────────────────────────────────────────────────
@@ -632,19 +654,25 @@ export default function Editor() {
         className="w-full text-3xl font-semibold text-slate-900 dark:text-white border-none outline-none resize-none overflow-hidden placeholder-slate-400 dark:placeholder-zinc-600 mb-1 bg-transparent [field-sizing:content]"
       />
 
-      {/* Slug (new post only until first save) */}
-      {(isNew || !sha) && (
-        <div className="flex items-center gap-1 mb-4">
-          <span className="text-xs text-slate-500 dark:text-white">slug:</span>
-          <input
-            type="text"
-            value={slug}
-            onChange={handleSlugChange}
-            placeholder="auto"
-            className="text-xs text-slate-500 dark:text-white border-none outline-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600"
-          />
-        </div>
-      )}
+      {/* Link — auto follows the title; custom lets you set your own */}
+      <div className="flex items-center gap-1 mb-4">
+        <span className="text-xs text-slate-500 dark:text-white">link: /blog/</span>
+        <input
+          type="text"
+          value={slug}
+          onChange={handleSlugChange}
+          readOnly={slugMode === "auto"}
+          placeholder={slugMode === "auto" ? "auto" : "custom-link"}
+          className="flex-1 text-xs text-slate-500 dark:text-white border-none outline-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600"
+        />
+        <button
+          type="button"
+          onClick={toggleSlugMode}
+          className="text-xs text-slate-600 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 rounded px-2 py-0.5 hover:border-slate-400 dark:hover:border-zinc-500 transition-colors"
+        >
+          {slugMode === "auto" ? "Auto" : "Custom"}
+        </button>
+      </div>
 
       {/* Meta row */}
       <div className="flex flex-wrap gap-4 mb-6 border-b border-slate-100 dark:border-zinc-800 pb-4">
