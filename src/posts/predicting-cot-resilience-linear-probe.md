@@ -55,13 +55,11 @@ I split train and test by prompt, not by sentence, making every prompt land on o
 
 ## What the probe found
 
-On the extreme cases (clearly resilient versus clearly fragile sentences), the probe reached about 75% test accuracy averaged across layers, peaking at 79% at Layer 13 (AUC ≈ 0.793). So reappearance is, at least in part, linearly readable from a single forward pass. That was the encouraging result.
-
-The discouraging one came from the full distribution. Once the ambiguous middle (scores 4–17) was included, which is most sentences, accuracy fell to about 63%, close to a strong majority-class baseline. So the probe can tell a clearly load-bearing thought from a clearly disposable one, but it mostly can't rank the in-between cases, and the in-between is where most real sentences live. That gap is the difference between an interesting signal and a usable tool, and right now it lands on the wrong side.
+On the extreme cases, the probe reached about 75% test accuracy averaged across layers, peaking at 79% at Layer 13 with ≈ 0.793 AUC. So reappearance might be linearly readable from a single forward pass, which was an encouraging result. However, once the ambiguous middle scores 4–17 was included, accuracy fell to about 63%, which isn't surprising considering it was trained on extreme cases. 
 
 ![Train and test accuracy across all 36 layers of Qwen3-4B](/img/posts/predicting-cot-resilience-linear-probe/layer_acc.png)
 
-A check on the learned direction was reassuring. Projecting sentences onto the probe's direction, the extremes matched intuition. The least resilient sentences were hedges and second-guessing:
+Checking the learned direction by projecting sentences onto the probe's direction, the extremes matched intuition. The least resilient sentences were hedges and second-guessing:
 
 > *"Wait, but just to make sure there's no trick or anything…"*
 > *"But maybe the question is a trick question?"*
