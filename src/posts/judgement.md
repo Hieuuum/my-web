@@ -14,6 +14,8 @@ We live in an age of abundance. For example, current LLMs have drastically reduc
 
 When there are a lot of options, you'd want good judgement to choose the best option. People won't use all software, but only the best ones in a very niche field. If you want to make money, you need to at least know which problems people will pay to get it solved and implement the corresponding software. Even if working on the wrong problem gives you experiences, it would still place you at a disadvantage because you will have to start again.
 
+![](/images/posts/judgement/screenshot-from-2026-06-15-19-18-24.png)
+
 To have good judgement, you should be able to think in first-principles from strong foundations. Linear and Abstract Algebra became very prominent fields in Mathematics because they started with strong assumptions and are built on rigorous reasoning. Read the greats in your field, and understand so deeply that you can reason from first principles instead of just assuming arguments.
 
 you should collect mental models, which are basically just principles for making decisions. The good mental models are the ones that have stood against the test of time. And you collect mental models by just reading a lot of books.
