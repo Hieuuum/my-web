@@ -38,8 +38,25 @@ function localKey(slug) {
 const MAX_IMAGE_DIM = 1600; // px, longest edge
 const MAX_UPLOAD_BYTES = 3.5 * 1024 * 1024; // base64 of this stays under ~4.5MB
 
+// Mirrors the server's ALLOWED_EXTS (api/upload.js). Some browsers/OSes hand us
+// a file with an empty MIME type (notably .webp dragged from certain sources),
+// so we accept by extension too rather than trusting file.type alone.
+const ALLOWED_IMAGE_EXTS = new Set(["png", "jpg", "jpeg", "gif", "webp", "svg"]);
+
+function fileExt(name) {
+  const i = name.lastIndexOf(".");
+  return i !== -1 ? name.slice(i + 1).toLowerCase() : "";
+}
+
+function isAllowedImage(file) {
+  return file.type.startsWith("image/") || ALLOWED_IMAGE_EXTS.has(fileExt(file.name));
+}
+
 async function downscaleImage(file) {
-  if (file.type === "image/svg+xml" || file.type === "image/gif") return file;
+  // Vector/animation: the canvas would destroy them. Empty/unknown type: skip
+  // re-encode so we never relabel the bytes — canvas.toBlob with a falsy type
+  // silently defaults to PNG, which would put PNG bytes under a .webp name.
+  if (file.type === "image/svg+xml" || file.type === "image/gif" || !file.type) return file;
   let bitmap;
   try {
     bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
@@ -474,7 +491,11 @@ export default function Editor() {
   // ── image upload ─────────────────────────────────────────────────────────
 
   async function uploadImage(file) {
-    if (!file || !file.type.startsWith("image/")) return;
+    if (!file) return;
+    if (!isAllowedImage(file)) {
+      setError("Unsupported image type — use PNG, JPEG, GIF, WebP, or SVG.");
+      return;
+    }
     const img = await downscaleImage(file);
     if (img.size > MAX_UPLOAD_BYTES) {
       setError("Image is too large to upload — try one under ~3 MB.");
@@ -516,7 +537,7 @@ export default function Editor() {
     }
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*";
+    input.accept = "image/*,.png,.jpg,.jpeg,.gif,.webp,.svg";
     input.onchange = async () => {
       const file = input.files[0];
       if (!file) return;
