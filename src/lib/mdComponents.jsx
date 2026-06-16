@@ -24,7 +24,7 @@ function parseSize(alt) {
 export const mdComponents = {
   img({ node, title, alt, ...props }) {
     const { alt: cleanAlt, style } = parseSize(alt);
-    const img = <img {...props} alt={cleanAlt} style={style} />;
+    const img = <img {...props} alt={cleanAlt} style={style} className="mx-auto block" />;
     if (!title) return img;
     return (
       <span className="block">

@@ -52,29 +52,47 @@ function isAllowedImage(file) {
   return file.type.startsWith("image/") || ALLOWED_IMAGE_EXTS.has(fileExt(file.name));
 }
 
+// Returns { data, width, height } — data is the blob/file to upload, width/height
+// are the stored image's pixel dimensions (null when unknown, e.g. SVG or a decode
+// failure). The width feeds the auto-inserted size hint so the author sees the real
+// dimension and can edit it to rescale.
 async function downscaleImage(file) {
   // Vector/animation: the canvas would destroy them. Empty/unknown type: skip
   // re-encode so we never relabel the bytes — canvas.toBlob with a falsy type
   // silently defaults to PNG, which would put PNG bytes under a .webp name.
-  if (file.type === "image/svg+xml" || file.type === "image/gif" || !file.type) return file;
+  if (file.type === "image/svg+xml" || file.type === "image/gif" || !file.type) {
+    return { data: file, width: null, height: null };
+  }
   let bitmap;
   try {
     bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
   } catch {
-    return file;
+    return { data: file, width: null, height: null };
   }
-  const scale = Math.min(1, MAX_IMAGE_DIM / Math.max(bitmap.width, bitmap.height));
+  const natW = bitmap.width;
+  const natH = bitmap.height;
+  const scale = Math.min(1, MAX_IMAGE_DIM / Math.max(natW, natH));
   if (scale === 1) {
     bitmap.close?.();
-    return file;
+    return { data: file, width: natW, height: natH };
   }
+  const w = Math.round(natW * scale);
+  const h = Math.round(natH * scale);
   const canvas = document.createElement("canvas");
-  canvas.width = Math.round(bitmap.width * scale);
-  canvas.height = Math.round(bitmap.height * scale);
-  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  canvas.width = w;
+  canvas.height = h;
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
   bitmap.close?.();
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, file.type, 0.85));
-  return blob && blob.size < file.size ? blob : file;
+  if (blob && blob.size < file.size) return { data: blob, width: w, height: h };
+  return { data: file, width: natW, height: natH };
+}
+
+// Build the markdown for an uploaded image. A known width becomes a `|width`
+// size hint (parsed by parseSize in mdComponents) so it renders at native size
+// and the number can be edited down to rescale; unknown width stays bare.
+function imageMarkdown(url, width) {
+  return width ? `![|${width}](${url})` : `![](${url})`;
 }
 
 // ── markdown preview (mirrors public BlogPost) ─────────────────────────────
@@ -491,15 +509,15 @@ export default function Editor() {
   // ── image upload ─────────────────────────────────────────────────────────
 
   async function uploadImage(file) {
-    if (!file) return;
+    if (!file) return null;
     if (!isAllowedImage(file)) {
       setError("Unsupported image type — use PNG, JPEG, GIF, WebP, or SVG.");
-      return;
+      return null;
     }
-    const img = await downscaleImage(file);
-    if (img.size > MAX_UPLOAD_BYTES) {
+    const { data, width } = await downscaleImage(file);
+    if (data.size > MAX_UPLOAD_BYTES) {
       setError("Image is too large to upload — try one under ~3 MB.");
-      return;
+      return null;
     }
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -507,13 +525,13 @@ export default function Editor() {
         const dataBase64 = e.target.result.split(",")[1];
         try {
           const result = await api.upload(file.name, dataBase64, routeSlug);
-          resolve(result.url);
+          resolve({ url: result.url, width });
         } catch (err) {
           setError("Image upload failed.");
           resolve(null);
         }
       };
-      reader.readAsDataURL(img);
+      reader.readAsDataURL(data);
     });
   }
 
@@ -541,8 +559,8 @@ export default function Editor() {
     input.onchange = async () => {
       const file = input.files[0];
       if (!file) return;
-      const url = await uploadImage(file);
-      if (url) insertAtCursor(`![](${url})`);
+      const result = await uploadImage(file);
+      if (result) insertAtCursor(imageMarkdown(result.url, result.width));
     };
     input.click();
   }
@@ -558,8 +576,8 @@ export default function Editor() {
           return;
         }
         const file = item.getAsFile();
-        const url = await uploadImage(file);
-        if (url) insertAtCursor(`![](${url})`);
+        const result = await uploadImage(file);
+        if (result) insertAtCursor(imageMarkdown(result.url, result.width));
         return;
       }
     }
@@ -573,8 +591,8 @@ export default function Editor() {
       setError("Save the post first, then add images.");
       return;
     }
-    const url = await uploadImage(file);
-    if (url) insertAtCursor(`![](${url})`);
+    const result = await uploadImage(file);
+    if (result) insertAtCursor(imageMarkdown(result.url, result.width));
   }
 
   // ── textarea auto-grow ───────────────────────────────────────────────────
