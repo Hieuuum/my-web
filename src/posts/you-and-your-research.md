@@ -31,6 +31,5 @@ Desire: without desire, wander -> some steps cancel -> arrive late.
 Drive: if you worked as hard as he did, you would've been as knowledgeable as he is. Intellectual compounding: 6% per hour, work 1 more hour per day -> A big number over a lifetime.
 Good working conditions aren't always the best: age.
 Work with great ideas, even if the people don't have any credentials. Zone melting.
-
-
+Work with the system, not against it
 
