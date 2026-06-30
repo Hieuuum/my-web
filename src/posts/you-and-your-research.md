@@ -18,11 +18,17 @@ Louis Pasteur said “Chance favors the prepared mind.” Edison said that if ot
 To do great research, you need a good style. I'd like to think of this as a combination of research taste and way of working.
 
 Right problem: 
-"Do you think that your work is important, or will lead to important problems?"
-Great Thoughts Friday
-Important Problem definition
-Open doors
-Reframe the problem
+"What are the most important problems in your field, and why aren’t you working on them?" Always ask yourself this question. No matter how hard-working or intelligent you are, if you work on the wrong problems, you will never produce great work.
+ 
+Great Thoughts Friday. Every Friday, set some time to think about the future of your current field. If you have an accurate vision of the future, then you can spot important problems and work on them later. Doing it on Friday allows you to also think about it in Saturday and Sunday. Don't do it on Mondays, because you might have a meeting on Tuesday and forget about it.
+
+Important problems are great problems that currently have a reasonable attack angle. Teleportation, antigravity, and time travel aren't important problems. Don't focus on a problem's economic value.
+
+Open doors policy. Always keep your doors open. You would get interrupted by chats, but get a better sense of what's going on in the world and know which problems to work on. A man with closed doors might get a little more work done per day, and thus a lot in 5 years. However, he wouldn't know much about the real-world situation, and hence working on a slightly less important problem. That tiny difference is all it takes to produce good work.
+Revise above.
+
+
+Reframe the problem. Hamming had to program a binary computer to do integrals that analog ones couldn't. Since the military gave him the job, they would also require him to make a report. The method used to do the integrations was crappy, so he knew that his report would definitely be scrutinized by the analog engineers. He also wanted to prove that binary computers were better than the analog ones. Using this opportunity, Hamming derived another integration method that was compatible with binary computers and gave the same results using different calculations. 
 
 Right time:
 Change after 7 years of working on a problem.
@@ -39,3 +45,4 @@ Work with the system, not against it
 Consider the trade-offs (Use the system, don't fight against it)
 Connect new information to old ones.
 Avoid sound-absorbers. Talk w people who make you stimulated.
+Make your work reproducible.
