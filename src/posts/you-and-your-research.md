@@ -8,7 +8,7 @@ draft: "true"
 I've just finished both reading and watching Richard Hamming's You and Your Research. Since it was such a great talk, I want to be able to write a good blog summarizing all of his great points.
 
 ## Why do great things?
-You've got just one life. Just one. Would you be happy living a good life, and in your old age, say "I'm glad that I lived a righteous and normal life"? Would you? I wouldn't. And Hamming wouldn't either.
+You've got just one life. Just one. Would you be happy living a good life, and in your old age, say "I'm glad that I lived a righteous and normal life"? Would you? I wouldn't, and Hamming wouldn't either.
 
 Some people would object that great work can only be done through sheer luck. Why does great thing happen many times to a single person then? Isn't it too repetitive? In Bell Telephone Laboratories, Claude Shannon created Information Theory and Richard Hamming invented Coding Theory. Was it a coincidence that they invented both of them at Bell Labs? Besides Information Theory, Shannon also applied Boolean Algebra for switching circuits for his Master's.
 
@@ -32,4 +32,3 @@ Drive: if you worked as hard as he did, you would've been as knowledgeable as he
 Good working conditions aren't always the best: age.
 Work with great ideas, even if the people don't have any credentials. Zone melting.
 Work with the system, not against it
-
