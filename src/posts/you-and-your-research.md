@@ -53,8 +53,9 @@ To solve important problems, you first need to believe that you can do it. Shann
 In chess, whenever you are attacked, you can either defend or attack. Shannon would always do the latter. At the climax of a match, he would say "I ain't scared of nothin'" and boldly move his queen to attack. Hamming deliberately copied the style, and would always say that whenever he starts solving a hard problem.
 
 #### Desire 
-Without desire, you'd be like a drunken sailor wandering, and some steps cancel each other out. Without desire, you would need
-#### Become emotionally involved -> Think about it day and night -> dreams -> subconcious -> creativity.
+Without desire, you'd be like a drunken sailor wandering, and some steps cancel each other out. Consider n the total number of steps you've taken. To reach the destination, without desire, you would need square root of n, and with desire it would be n.
+
+You also need to become emotionally involved. No one knows exaactly where creativity comes from. However, we do know that dreams comes from our subconcious, and Then you'll think about it day and night -> dreams -> subconcious -> creativity.
 #### Drive: if you worked as hard as he did, you would've been as knowledgeable as he is. Intellectual compounding: 6% per hour, work 1 more hour per day -> A big number over a lifetime.
 #### Good working conditions aren't always the best: age.
 #### Work with great ideas, even if the people don't have any credentials. Zone melting.
