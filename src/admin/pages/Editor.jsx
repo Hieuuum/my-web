@@ -716,7 +716,7 @@ export default function Editor() {
                 // spellcheck attribute flips. Blur+refocus after React applies
                 // the new attribute forces the squiggles to refresh.
                 const ta = textareaRef.current;
-                if (ta) requestAnimationFrame(() => { ta.blur(); ta.focus(); });
+                if (ta) requestAnimationFrame(() => { ta.blur(); ta.focus({ preventScroll: true }); });
               }}
               title={spellcheckOn ? "Spellcheck on — click to disable" : "Spellcheck off — click to enable"}
               className={`text-base transition-colors px-1.5 py-1 font-mono ${spellcheckOn ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-white/40 hover:text-slate-700 dark:hover:text-white"}`}
