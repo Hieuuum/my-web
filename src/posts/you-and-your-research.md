@@ -48,8 +48,12 @@ Revise above
 
 ### Right way
 #### Confidence (chess, ambiguity)
-To solve important problems, you first need to believe that you can do it. Shannon had supreme confidence. In chess, whenever you are attacked, you can either defend or attack. Shannon would always do the latter. At the climax of a match, he would boldly move his queen to 
-#### Desire: without desire, wander -> some steps cancel -> arrive late.
+To solve important problems, you first need to believe that you can do it. Shannon had supreme confidence. He wanted to prove that the average random code was good, so he measured the average quality of the code and proved that it was good. Who in their right mind would do that?
+
+In chess, whenever you are attacked, you can either defend or attack. Shannon would always do the latter. At the climax of a match, he would say "I ain't scared of nothin'" and boldly move his queen to attack. Hamming deliberately copied the style, and would always say that whenever he starts solving a hard problem.
+
+#### Desire 
+Without desire, you'd be like a drunken sailor wandering, and some steps cancel each other out. Without desire, you would need
 #### Become emotionally involved -> Think about it day and night -> dreams -> subconcious -> creativity.
 #### Drive: if you worked as hard as he did, you would've been as knowledgeable as he is. Intellectual compounding: 6% per hour, work 1 more hour per day -> A big number over a lifetime.
 #### Good working conditions aren't always the best: age.
