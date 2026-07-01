@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api, ApiError } from "../api";
+import { useUndoHistory } from "../useUndoHistory";
 import { mdComponents } from "../../lib/mdComponents.jsx";
 
 // ── helpers ────────────────────────────────────────────────────────────────
@@ -122,11 +123,11 @@ const TOOLBAR_ACTIONS = [
   { label: "Link", template: (sel) => `[${sel || "text"}](url)` },
 ];
 
-// Insert `text` replacing [start, end] in the textarea via execCommand, which
-// keeps the browser's native undo stack (Ctrl+Z) intact — writing through
-// React state would wipe it. React state syncs via the input event execCommand
-// fires. Falls back to a state splice when execCommand fails (e.g. textarea
-// hidden in Preview mode), losing undo for that one insertion only.
+// Insert `text` replacing [start, end] in the textarea via execCommand. The
+// input event it fires drives both React state and the undo history (see
+// useUndoHistory) — writing straight through React state would skip that event
+// and the edit would go unrecorded. Falls back to a state splice when
+// execCommand fails (e.g. textarea hidden in Preview mode).
 function insertTextUndoable(textarea, text, start, end, onChange) {
   textarea.focus();
   textarea.setSelectionRange(start, end);
@@ -281,6 +282,14 @@ export default function Editor() {
   const titleRef = useRef(null);
   const autosaveTimer = useRef(null);
 
+  // Pause-coalesced undo/redo for the content textarea (Ctrl+Z / Ctrl+Shift+Z).
+  const {
+    reset: resetHistory,
+    record: recordHistory,
+    breakStep: breakHistory,
+    onKeyDown: handleHistoryKeyDown,
+  } = useUndoHistory(textareaRef, setContent);
+
   // track if dirty (unsaved changes after last server save)
   const savedSnapshot = useRef(null); // stringified {title,date,excerpt,content,draft}
   const isDirtyRef = useRef(false); // kept in sync alongside savedSnapshot for beforeunload
@@ -304,6 +313,7 @@ export default function Editor() {
         setDate(post.date || todayISO());
         setExcerpt(post.excerpt || "");
         setContent(post.content || "");
+        resetHistory(post.content || "");
         setSlug(post.slug);
         setSlugMode(post.slug === toSlug(post.title || "") ? "auto" : "custom");
         setIsDraft(!!post.draft);
@@ -355,7 +365,7 @@ export default function Editor() {
       savedSnapshot.current = JSON.stringify({ title: "", date: todayISO(), excerpt: "", content: "", draft: true });
       setLoaded(true);
     }
-  }, [isNew, routeSlug, navigate]);
+  }, [isNew, routeSlug, navigate, resetHistory]);
 
   // ── auto-slug from title (while in auto mode) ────────────────────────────
 
@@ -404,6 +414,7 @@ export default function Editor() {
     setDate(restoredDate);
     setExcerpt(restoredExcerpt);
     setContent(restoredContent);
+    resetHistory(restoredContent);
     setIsDraft(restoredDraft);
     // Keep savedSnapshot at the server-fetched value (or the blank initial
     // snapshot for new posts) so isDirty=true after restore, which keeps the
@@ -538,6 +549,7 @@ export default function Editor() {
   function insertAtCursor(text) {
     const ta = textareaRef.current;
     if (!ta) return;
+    breakHistory();
     const start = ta.selectionStart;
     const end = ta.selectionEnd;
     insertTextUndoable(ta, text, start, end, setContent);
@@ -630,6 +642,7 @@ export default function Editor() {
 
   function handleContentChange(e) {
     setContent(e.target.value);
+    recordHistory(e.target.value, e.target.selectionStart, e.target.selectionEnd);
   }
 
   // ── slug input handling ──────────────────────────────────────────────────
@@ -674,6 +687,7 @@ export default function Editor() {
                 type="button"
                 onClick={() => {
                   if (textareaRef.current) {
+                    breakHistory();
                     applyToolbar(action, textareaRef.current, setContent);
                   }
                 }}
@@ -867,7 +881,10 @@ export default function Editor() {
             ref={textareaRef}
             value={content}
             onChange={handleContentChange}
-            onKeyDown={(e) => handleEditorKeyDown(e, setContent)}
+            onKeyDown={(e) => {
+              if (handleHistoryKeyDown(e)) return;
+              handleEditorKeyDown(e, setContent);
+            }}
             onPaste={handlePaste}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
