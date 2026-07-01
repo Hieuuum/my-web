@@ -282,6 +282,7 @@ export default function Editor() {
   const textareaRef = useRef(null);
   const titleRef = useRef(null);
   const autosaveTimer = useRef(null);
+  const spellcheckInitRef = useRef(false); // skip mount in the spellcheck re-scan effect
 
   // Pause-coalesced undo/redo for the content textarea (Ctrl+Z / Ctrl+Shift+Z).
   const {
@@ -673,6 +674,20 @@ export default function Editor() {
     }
   }, [title, date, excerpt, content, isDraft, loaded, currentSnapshot]);
 
+  // Toggling spellCheck on doesn't re-scan existing text by itself. After React
+  // commits the new attribute, blur then refocus the textarea in a SEPARATE
+  // frame — a same-frame blur+focus gets coalesced and skips the re-scan.
+  // preventScroll keeps the page put; turning off needs no nudge (browser clears
+  // squiggles on its own).
+  useEffect(() => {
+    if (!spellcheckInitRef.current) { spellcheckInitRef.current = true; return; }
+    if (!spellcheckOn) return;
+    const ta = textareaRef.current;
+    if (!ta) return;
+    ta.blur();
+    requestAnimationFrame(() => ta.focus({ preventScroll: true }));
+  }, [spellcheckOn]);
+
   if (!loaded) return null;
 
   return (
@@ -710,14 +725,7 @@ export default function Editor() {
             {/* Spellcheck toggle: off by default */}
             <button
               type="button"
-              onClick={() => {
-                setSpellcheckOn((v) => !v);
-                // Browsers only re-run spellcheck on focus/edit, not when the
-                // spellcheck attribute flips. Blur+refocus after React applies
-                // the new attribute forces the squiggles to refresh.
-                const ta = textareaRef.current;
-                if (ta) requestAnimationFrame(() => { ta.blur(); ta.focus({ preventScroll: true }); });
-              }}
+              onClick={() => setSpellcheckOn((v) => !v)}
               title={spellcheckOn ? "Spellcheck on — click to disable" : "Spellcheck off — click to enable"}
               className={`text-base transition-colors px-1.5 py-1 font-mono ${spellcheckOn ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-white/40 hover:text-slate-700 dark:hover:text-white"}`}
             >
