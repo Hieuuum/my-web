@@ -33,7 +33,7 @@ Reframe the problem. Hamming had to program a binary computer to do integrals th
 Another example is when Hamming was deciding between Bell Labs and airline companies. At the time, doing programming required computer girls. He wanted to go to Bell Labs to study great people, but they wouldn't provide him with the required labor. On the other hand, airline companies had sparse talented people spread everywhere, but would provide him with the needed manpower. After deliberating for a while, Hamming realized that since he believed computer could do anything, why can't he program them to produce code? By changing the question, he arrived at the frontier of his field.
 
 ### Right time
-Change after 7 years of working on a problem. After making breakthoughs, most people would die
+Change after 7 years of working on a problem. After making breakthoughs, most people would decided to s
 Seize the moment when a new idea comes.
 
 ### Right way
