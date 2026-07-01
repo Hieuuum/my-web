@@ -47,7 +47,7 @@ When a new idea that might solve one of your important problems comes, drop ever
 Revise above
 
 ### Right way
-#### Confidence (chess, ambiguity)
+#### Confidence
 To solve important problems, you first need to believe that you can do it. Shannon had supreme confidence. He wanted to prove that the average random code was good, so he measured the average quality of the code and proved that it was good. Who in their right mind would do that?
 
 In chess, whenever you are attacked, you can either defend or attack. Shannon would always do the latter. At the climax of a match, he would say "I ain't scared of nothin'" and boldly move his queen to attack. Hamming deliberately copied the style, and would always say that whenever he starts solving a hard problem.
@@ -55,8 +55,16 @@ In chess, whenever you are attacked, you can either defend or attack. Shannon wo
 #### Desire 
 Without desire, you'd be like a drunken sailor wandering, and some steps cancel each other out. Consider n the total number of steps you've taken. To reach the destination, without desire, you would need square root of n, and with desire it would be n.
 
-You also need to become emotionally involved. No one knows exaactly where creativity comes from. However, we do know that dreams comes from our subconcious, and Then you'll think about it day and night -> dreams -> subconcious -> creativity.
-#### Drive: if you worked as hard as he did, you would've been as knowledgeable as he is. Intellectual compounding: 6% per hour, work 1 more hour per day -> A big number over a lifetime.
+You also need to become emotionally involved. No one knows exactly where creativity comes from. However, we do know that our subconcious produces dreams, and dreams come from events we experienced during the day. When you starve your subconcious by thinking about a problem day and night, then you naturally have the solution when you wake up someday.
+
+Revise above
+
+#### Uncertainty
+You need to be good
+
+#### Conscientiousness
+Just like money, knowledge and productivity are like compound interest. The more you learn, the more you know, the more you can do, and hence the more opportunities. Given two person with the same ability and one is 10% more productive than the other, then the former will produce twice as much as the latter over a lifetime.
+
 #### Good working conditions aren't always the best: age.
 #### Work with great ideas, even if the people don't have any credentials. Zone melting.
 #### Work with the system, not against it
