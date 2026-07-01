@@ -5,7 +5,7 @@ excerpt: "How to have a great career in research (or any other fields)."
 draft: "true"
 ---
 
-I've just finished both reading and watching Richard Hamming's You and Your Research. Since it was such a great talk, I want to be able to write a comprehensive blog summarizing most of his points.
+I've just finished both reading and watching Richard Hamming's You and Your Research. It was such a great talk that I want to write a comprehensive blog summarizing what I've learned. If you haven't, I recommend you [read](https://gwern.net/doc/science/1986-hamming) or [watch](https://www.youtube.com/watch?v=a1zDuOPkMSw) the talk before reading this blog.
 
 ## Why do great things?
 You've got just one life. Just one. Would you be happy living a good life, and in your old age, say "I'm glad I lived a righteous and normal life"? Would you? I wouldn't, and Hamming wouldn't either.
