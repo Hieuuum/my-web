@@ -277,6 +277,7 @@ export default function Editor() {
   const [loaded, setLoaded] = useState(false);
   const [restoreBanner, setRestoreBanner] = useState(null); // local draft data to restore
   const [error, setError] = useState("");
+  const [spellcheckOn, setSpellcheckOn] = useState(false); // off by default; jargon triggers false positives
 
   const textareaRef = useRef(null);
   const titleRef = useRef(null);
@@ -706,6 +707,15 @@ export default function Editor() {
             >
               Image
             </button>
+            {/* Spellcheck toggle: off by default */}
+            <button
+              type="button"
+              onClick={() => setSpellcheckOn((v) => !v)}
+              title={spellcheckOn ? "Spellcheck on — click to disable" : "Spellcheck off — click to enable"}
+              className={`text-base transition-colors px-1.5 py-1 font-mono ${spellcheckOn ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-white/40 hover:text-slate-700 dark:hover:text-white"}`}
+            >
+              Spell
+            </button>
           </div>
 
           {/* Write / Preview / Split toggle */}
@@ -888,6 +898,7 @@ export default function Editor() {
             onPaste={handlePaste}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
+            spellCheck={spellcheckOn}
             placeholder="Write in markdown…"
             className="w-full font-mono text-sm text-slate-800 dark:text-white border-none outline-none resize-none bg-transparent placeholder-slate-400 dark:placeholder-zinc-600 [field-sizing:content]"
             style={{ minHeight: "60vh" }}
