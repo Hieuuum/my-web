@@ -59,8 +59,8 @@ You also need to become emotionally involved. No one knows exactly where creativ
 
 Revise above
 
-#### Uncertainty
-You need to be good
+#### Ambiguity
+You need to be good at dealing with ambiguity. You need to be able to believe in your theory enough to produce progress, but not too much to notice the flaws and note them down. Charles Darwin would always notes down the inconsistencies in his theory because it is easier to forget them and notice only on its strength. Believe in a theory too much, and you'd miss key details. Doubt it too much, and you won't be able to make significant progress.
 
 #### Conscientiousness
 Just like money, knowledge and productivity are like compound interest. The more you learn, the more you know, the more you can do, and hence the more opportunities. Given two person with the same ability and one is 10% more productive than the other, then the former will produce twice as much as the latter over a lifetime.
