@@ -28,9 +28,7 @@ Every Friday, set some time to think about the future of your current field. If 
 Important problems are great problems that currently have a reasonable attack angle. Teleportation, antigravity, and time travel aren't important problems. Don't focus on a problem's economic value.
 
 #### Open doors policy
-Always keep your doors open. You would get interrupted by chats, but get a better sense of what's going on in the world and know which problems to work on. A man with closed doors might get a little more work done per day, and thus a lot in 5 years. However, he wouldn't know much about the real-world situation, and hence working on a slightly less important problem. That tiny difference is all it takes to produce good work.
-
-Revise above.
+Always keep your doors open. Although you occasionally get interrupted by chats, you get a better sense of what's going on in the world and know which problems to work on. A man with closed doors might get a little more work done per day, thus a lot in 5 years. However, he wouldn't know much about the real-world situation, and hence working on a slightly less important problem. That tiny difference is all it takes to produce good work.
 
 #### Reframe the problem
 Solve more general problems. Hamming had to program a binary computer to do integrals that analog ones couldn't. Since the military gave him the job, they would also require him to make a report. The method used to do the integrations was crappy, so he knew that his report would definitely be scrutinized by the analog engineers. He also wanted to prove that binary computers were better than the analog ones. Using this opportunity, Hamming derived another integration method that was compatible with binary computers and gave the same results using different calculations. Just by reframing the problem, Hamming did much more important work.
@@ -39,11 +37,18 @@ Turn defects into opportunities. Another example is when Hamming was deciding be
 
 ### Right time
 #### Life-cycle
-Change your field every 7-10 years. After making a breakthrough or gaining fame, most people only work on important problems using their old methods. New breakthoughs r
-#### Seize the moment when a new idea comes.
+Change your field every 7-10 years. After making a breakthrough or gaining fame, most people only work on important problems using their old methods. First, you cannot grow big acorn trees without planting tiny little seeds! You need to work on smaller problems that might lead to important ones. And you don't need to change from mathematics to literature, but work on other sub-areas of mathematics. Second, new problems requires new way of thinking.
+
+Revise above
+
+#### Seize the moment
+When a new idea that might solve one of your important problems comes, drop everything and only focus on that. Hamming heard of a horror story that he cannot confirm. A scientist from Berkeley told him that they should've discovered nuclear fission first, not []. They had the data, but forgot to analyze it and instead focused on building new equipment.
+
+Revise above
 
 ### Right way
-#### Confidence (chess, ambiguity), 
+#### Confidence (chess, ambiguity)
+To solve important problems, you first need to believe that you can do it. Shannon had supreme confidence. In chess, whenever you are attacked, you can either defend or attack. Shannon would always do the latter. At the climax of a match, he would boldly move his queen to 
 #### Desire: without desire, wander -> some steps cancel -> arrive late.
 #### Become emotionally involved -> Think about it day and night -> dreams -> subconcious -> creativity.
 #### Drive: if you worked as hard as he did, you would've been as knowledgeable as he is. Intellectual compounding: 6% per hour, work 1 more hour per day -> A big number over a lifetime.
