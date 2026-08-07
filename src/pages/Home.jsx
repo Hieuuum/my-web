@@ -55,7 +55,18 @@ export default function Home() {
                   Thomas Jiralerspong
                 </a>{" "}
                 to understand the mechanistic difference between eliciting
-                tasks a model already knows and teaching it new tasks.
+                tasks a model already knows and teaching it new tasks. I also
+                do research at{" "}
+                <a
+                  href="https://algoverseairesearch.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-900 dark:text-zinc-100 underline"
+                >
+                  Algoverse
+                </a>{" "}
+                to interpret models thinking in continuous latent space instead
+                of natural language.
               </p>
             </div>
             <div className="flex gap-4 mt-8">
