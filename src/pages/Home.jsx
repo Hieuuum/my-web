@@ -36,9 +36,26 @@ export default function Home() {
               <p>
                 Undergraduate at Union College studying Computer Science and
                 Mathematics. I&apos;m interested in AI safety, making current AI
-                systems more aligned. Currently doing research at Algoverse to
-                interpret models thinking in continuous latent space instead of
-                natural language.
+                systems more aligned. Currently doing research at{" "}
+                <a
+                  href="https://caish.org/mars"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-900 dark:text-zinc-100 underline"
+                >
+                  MARS V
+                </a>{" "}
+                under{" "}
+                <a
+                  href="https://superkaiba.github.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-900 dark:text-zinc-100 underline"
+                >
+                  Thomas Jiralerspong
+                </a>{" "}
+                to understand the mechanistic difference between eliciting
+                tasks a model already knows and teaching it new tasks.
               </p>
             </div>
             <div className="flex gap-4 mt-8">
