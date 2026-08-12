@@ -43,3 +43,26 @@ html:not(.dark) pre.shiki {
   background-color: #f1f5f9 !important;
   border: 1px solid #cbd5e1;
 }
+
+/* Inline code mentions in prose (e.g. a class or variable name referenced
+   outside a fenced block) get a bordered pill instead of Typography's default
+   bold + literal-backtick-character styling, so they read as a code
+   reference at a glance. `:not(pre code)` excludes Shiki's fenced blocks,
+   which are already framed above. */
+.prose code:not(pre code) {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  padding: 0.15em 0.4em;
+  font-weight: 500;
+}
+
+.prose code:not(pre code)::before,
+.prose code:not(pre code)::after {
+  content: none;
+}
+
+html.dark .prose code:not(pre code) {
+  background-color: #27272a;
+  border-color: #3f3f46;
+}

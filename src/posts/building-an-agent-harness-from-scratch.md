@@ -7,7 +7,7 @@ What is an agent harness? LLMs can't interact with an environment on its own. Th
 
 To deeply understand agent harnesses, we should start from the basics. Building an agent harness from scratch would help a lot with understanding what's going under the hood. I'll implement this in Python using OpenAI API in this blog.
 
-We first need a class responsible for storing the entire conversation history and calling a model. Let's call it the Agent class.
+We first need a class responsible for storing the entire conversation history and calling a model. Let's call it the `Agent` class.
 
 ```python
 from openai import OpenAI
@@ -119,7 +119,7 @@ This minimal text-based ReAct implementation has several problems. First, there 
 
 ## Tool
 
-To resolve this, we need to built a Tool class that serves both the model-facing interface and the Python runtime. It provides the schema and description for the model's side, while handling validation and execution of inputs for the runtime.
+To resolve this, we need to built a `Tool` class that serves both the model-facing interface and the Python runtime. It provides the schema and description for the model's side, while handling validation and execution of inputs for the runtime.
 
 ```python
 from dataclasses import dataclass
@@ -213,7 +213,7 @@ Do not invent tool results.
 
 </details>
 
-We should also update the Agent class so it can add tool calls and results to the conversation history. Don't forget to update the harness too!
+We should also update the `Agent` class so it can add tool calls and results to the conversation history. Don't forget to update the harness too!
 
 ```python
 class Agent:
@@ -271,7 +271,7 @@ def query(question, max_turns=5):
 
 ## RunState and Tracing
 
-We now have a working harness! However, it's not enough. What if you want to terminate the run after a number of turns/tool calls, or diagnose when a run failed? You'd need to keep track of relevant information during a run. RunState will be in charge of storing the current execution state, while Tracer records the events preceding that current state: before/after a model call, before/after a tool call, errors during a run, etc.
+We now have a working harness! However, it's not enough. What if you want to terminate the run after a number of turns/tool calls, or diagnose when a run failed? You'd need to keep track of relevant information during a run. `RunState` will be in charge of storing the current execution state, while `Tracer` records the events preceding that current state: before/after a model call, before/after a tool call, errors during a run, etc.
 
 ```python
 @dataclass
@@ -397,7 +397,7 @@ def verify_booking_cancelled(booking_id):
 
 ## Evaluation
 
-Evaluation is applying verification at scale. An evaluation should be ran in a controlled initial environment. In our case, it would be resetting the booking variable, since it might have been modified by other evaluation runs. You need to be careful in designing your evaluations and expected outcomes. For most cases, we just need to inspect the status of a booking\_id. However, we also have a case that tries to cancel a non-existent flight ticket. For the run to pass, the agent should not modify the system.
+Evaluation is applying verification at scale. An evaluation should be ran in a controlled initial environment. In our case, it would be resetting the booking variable, since it might have been modified by other evaluation runs. You need to be careful in designing your evaluations and expected outcomes. For most cases, we just need to inspect the status of a `booking_id`. However, we also have a case that tries to cancel a non-existent flight ticket. For the run to pass, the agent should not modify the system.
 
 ```python
 import copy
