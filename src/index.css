@@ -36,9 +36,10 @@ html.dark .shiki span {
 
 /* light-plus's real editor background is pure white — identical to the page
    background, so code blocks had no visible edge in light mode. Frame them
-   with the site's existing slate-50/slate-200 palette instead, overriding
-   Shiki's inline white (only `!important` beats an inline style). */
+   with the site's existing slate palette instead, overriding Shiki's inline
+   white (only `!important` beats an inline style). slate-300 border (not the
+   more common slate-200) so the edge reads clearly against a white page. */
 html:not(.dark) pre.shiki {
-  background-color: #f8fafc !important;
-  border: 1px solid #e2e8f0;
+  background-color: #f1f5f9 !important;
+  border: 1px solid #cbd5e1;
 }
