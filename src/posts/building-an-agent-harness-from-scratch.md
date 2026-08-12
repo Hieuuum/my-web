@@ -22,7 +22,7 @@ To resolve this, we need to built a Tool class that stores the information of ea
 
 Since we are not using the ReAct framework anymore, we should change the system prompt so the model doesn't get confused.
 
-We should also update the Agent class so it can add tool calls and tool results to the conversation history. =--==Don't forget to update the harness too!
+We should also update the Agent class so it can add tool calls and tool results to the conversation history. Don't forget to update the harness too!
 
 Now we have a working harness! However, it's not enough. If an error happened during a run, it would be hard to diagnose the error. To fix this, the harness needs to keep track of relevant information during a run. I'll create a RunState class to keep track of the current turn, number of tools called, current status, stop reason, and final answer. A separate Tracer class will keep track of the events happened during the runs: before/after a model call, before/after a tool call, errors during a run, etc.
 
