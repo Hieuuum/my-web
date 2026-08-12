@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { api, ApiError } from "../api";
 import { useUndoHistory } from "../useUndoHistory";
 import { mdComponents } from "../../lib/mdComponents.jsx";
@@ -103,6 +104,7 @@ function Preview({ content }) {
     <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeHighlight]}
         remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
         components={mdComponents}
       >

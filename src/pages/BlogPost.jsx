@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { getPost } from "../lib/posts";
 import { mdComponents } from "../lib/mdComponents.jsx";
 
@@ -65,6 +66,7 @@ export default function BlogPost() {
       <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeHighlight]}
           remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
           components={mdComponents}
         >

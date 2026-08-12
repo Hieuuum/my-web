@@ -16,6 +16,12 @@ export default {
             color: "#1e293b",
             a: { color: "#0f172a", textDecoration: "underline" },
             "h1,h2,h3,h4": { color: "#0f172a" },
+            pre: {
+              fontSize: "0.875rem",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "anywhere",
+              overflowX: "visible",
+            },
           },
         },
         invert: {

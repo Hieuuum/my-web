@@ -18,3 +18,40 @@
     @apply bg-white text-slate-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
   }
 }
+
+/* Syntax highlighting for fenced code blocks (rehype-highlight). Tokens are
+   distinguished by weight/italic/shade only — no hue — to stay within the
+   site's grayscale-only palette. */
+@layer components {
+  .hljs-comment,
+  .hljs-quote {
+    @apply italic text-slate-400 dark:text-zinc-500;
+  }
+
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-literal,
+  .hljs-section,
+  .hljs-link {
+    @apply font-semibold text-slate-900 dark:text-zinc-100;
+  }
+
+  .hljs-title,
+  .hljs-name,
+  .hljs-built_in,
+  .hljs-attribute {
+    @apply font-semibold text-slate-800 dark:text-zinc-200;
+  }
+
+  .hljs-string,
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-addition {
+    @apply text-slate-600 dark:text-zinc-400;
+  }
+
+  .hljs-number,
+  .hljs-meta {
+    @apply text-slate-500 dark:text-zinc-500;
+  }
+}
