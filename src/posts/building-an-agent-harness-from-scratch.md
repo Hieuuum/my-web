@@ -57,8 +57,6 @@ known_actions = {
 
 [ReAct](https://www.ibm.com/think/topics/react-agent) is a foundational yet simple framework that combines chain-of-thought reasoning with external tool use. In this framework, the LLM is first given instructions on format responses and available tools in the system prompt.
 
-*ReAct system prompt*
-
 ```text
 You run in a loop of Thought, Action, PAUSE, Observation.
 At the end of the loop you output an Answer.
@@ -79,6 +77,8 @@ Evaluates a simple arithmetic expression.
 When finished, output:
 Answer: <answer>
 ```
+
+*ReAct system prompt*
 
 When given a problem, the agent would first think through it, then suggest functions and inputs to use. The harness would parse the action, execute the tool, and return the results back to the agent through the conversation history. This is repeated until the agent knows the answer and returns it back to the user.
 
@@ -175,8 +175,6 @@ class Tool:
         return self.fn(**args)
 ```
 
-*Wrapping the functions as tools*
-
 ```python
 get_price_tool = Tool(
     name="get_price",
@@ -198,9 +196,9 @@ tools = {
 }
 ```
 
-Since we are not using the ReAct framework anymore, we should change the system prompt so the model doesn't get confused.
+*Wrapping the functions as tools*
 
-*Updated system prompt*
+Since we are not using the ReAct framework anymore, we should change the system prompt so the model doesn't get confused.
 
 ```text
 You are a helpful assistant.
@@ -208,6 +206,8 @@ You are a helpful assistant.
 Use the provided tools when needed.
 Do not invent tool results.
 ```
+
+*Updated system prompt*
 
 We should also update the `Agent` class so it can add tool calls and results to the conversation history. Don't forget to update the harness too!
 
@@ -240,8 +240,6 @@ class Agent:
         return response.choices[0].message
 ```
 
-*The updated harness loop*
-
 ```python
 import json
 
@@ -266,6 +264,8 @@ def query(question, max_turns=5):
             result = tools[name].run(args)
             bot.add_tool_result(tool_call.id, result)
 ```
+
+*The updated harness loop*
 
 ## RunState and Tracing
 
@@ -439,8 +439,6 @@ eval_cases = [
 ]
 ```
 
-*Running a single eval case*
-
 ```python
 def evaluate_case(case):
     reset_bookings()
@@ -473,7 +471,7 @@ def evaluate_case(case):
     }
 ```
 
-*Running all eval cases*
+*Running a single eval case*
 
 ```python
 def run_evals(cases):
@@ -491,5 +489,7 @@ for result in results:
         f"stop={result['stop_reason']}"
     )
 ```
+
+*Running all eval cases*
 
 Now you that you have a concrete understanding of an agent harness, go build one!

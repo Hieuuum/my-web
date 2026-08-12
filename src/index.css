@@ -66,3 +66,27 @@ html.dark .prose code:not(pre code) {
   background-color: #27272a;
   border-color: #3f3f46;
 }
+
+/* Code snippet captions: a paragraph consisting solely of italic text (the
+   markdown convention used for these in post source) is styled like the
+   image caption in mdComponents.jsx — small, centered, muted — rather than
+   as regular italic prose. Tightened margins pull it snug against the
+   fenced block above. */
+.prose pre.shiki:has(+ p > em:only-child) {
+  margin-bottom: 0.5rem;
+}
+
+.prose p:has(> em:only-child) {
+  margin-top: 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.prose p:has(> em:only-child) em {
+  font-style: normal;
+}
+
+html.dark .prose p:has(> em:only-child) {
+  color: #a1a1aa;
+}
