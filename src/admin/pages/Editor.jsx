@@ -2,10 +2,11 @@ import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
+import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
 import { api, ApiError } from "../api";
 import { useUndoHistory } from "../useUndoHistory";
 import { mdComponents } from "../../lib/mdComponents.jsx";
+import { shikiThemes, useShikiHighlighter } from "../../lib/shiki";
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -100,11 +101,16 @@ function imageMarkdown(url, width) {
 // ── markdown preview (mirrors public BlogPost) ─────────────────────────────
 
 function Preview({ content }) {
+  const highlighter = useShikiHighlighter();
   return (
     <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeHighlight]}
+        rehypePlugins={
+          highlighter
+            ? [[rehypeShikiFromHighlighter, highlighter, { themes: shikiThemes, fallbackLanguage: "text" }]]
+            : []
+        }
         remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
         components={mdComponents}
       >

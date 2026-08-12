@@ -19,40 +19,17 @@
   }
 }
 
-/* Syntax highlighting for fenced code blocks (rehype-highlight). Tokens are
-   distinguished by weight/italic/shade only — no hue — to stay within the
-   site's grayscale-only palette. Deliberately NOT inside @layer components:
-   these class names are injected at runtime by rehype-highlight and never
-   appear literally in a scanned source file, so Tailwind's JIT content scan
-   would tree-shake them out of the build if they were layered. */
-.hljs-comment,
-.hljs-quote {
-  @apply italic text-slate-400 dark:text-zinc-500;
-}
-
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-literal,
-.hljs-section,
-.hljs-link {
-  @apply font-semibold text-slate-900 dark:text-zinc-100;
-}
-
-.hljs-title,
-.hljs-name,
-.hljs-built_in,
-.hljs-attribute {
-  @apply font-semibold text-slate-800 dark:text-zinc-200;
-}
-
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-  @apply text-slate-600 dark:text-zinc-400;
-}
-
-.hljs-number,
-.hljs-meta {
-  @apply text-slate-500 dark:text-zinc-500;
+/* Syntax highlighting for fenced code blocks (@shikijs/rehype), using the
+   real VS Code Dark Modern / Light Modern token colors (dark-plus / light-plus
+   themes) — an intentional, documented exception to the site's grayscale-only
+   palette, see CLAUDE.md. Shiki emits both --shiki-light and --shiki-dark CSS
+   variables per token inline; this class-based rule (matching the site's
+   `dark` class toggle) picks the dark set. */
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }

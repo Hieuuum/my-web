@@ -20,6 +20,8 @@ Vite + React SPA with React Router. No backend — all data is static.
 
 **Markdown rendering** (`src/pages/BlogPost.jsx`): `react-markdown` + `remark-gfm`, styled via `@tailwindcss/typography` (`prose prose-slate`).
 
+**Code syntax highlighting** (`src/lib/shiki.js`): Shiki, using the real VS Code Dark Modern / Light Modern token colors (which inherit unchanged from the bundled `dark-plus` / `light-plus` themes) — not a hand-rolled palette. Runs on the JS regex engine (`shiki/engine/javascript`), not the default WASM oniguruma engine, to avoid a ~600KB binary in a static site. Only a curated language list is pre-loaded (see `LANGS` in `shiki.js`) because `react-markdown` processes synchronously and can't await Shiki's on-demand language loading — `fallbackLanguage: "text"` covers anything not in the list rather than throwing. Add a language to `LANGS` if a post needs one that isn't there. The highlighter is a module-level singleton (`useShikiHighlighter`) shared by `BlogPost.jsx` and the admin editor preview (`src/admin/pages/Editor.jsx`) so it's only built once.
+
 **Styling**: Tailwind CSS v3 with the slate color palette throughout. Max content width is `max-w-3xl` centered with `px-6` padding on all pages.
 
 ## Design principles
@@ -32,6 +34,7 @@ This site is **extremely minimalist**. Enforce these strictly:
 - Palette: white background, slate-900 headings, slate-600/700 body, slate-500 muted, slate-100/200 borders only (dark: zinc-950 bg, zinc-100 headings, zinc-300 body, zinc-400 muted)
 - If a UI element feels "designed", simplify it
 - When in doubt, remove rather than add
+- **Exception**: fenced code blocks use real syntax-highlighting colors (see below) — the one deliberate departure from the grayscale palette
 
 ## Adding content
 

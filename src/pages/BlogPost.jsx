@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
+import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
 import { getPost } from "../lib/posts";
 import { mdComponents } from "../lib/mdComponents.jsx";
+import { shikiThemes, useShikiHighlighter } from "../lib/shiki";
 
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
+  const highlighter = useShikiHighlighter();
 
   useEffect(() => {
     setLoading(true);
@@ -66,7 +68,11 @@ export default function BlogPost() {
       <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeHighlight]}
+          rehypePlugins={
+            highlighter
+              ? [[rehypeShikiFromHighlighter, highlighter, { themes: shikiThemes, fallbackLanguage: "text" }]]
+              : []
+          }
           remarkRehypeOptions={{ footnoteLabel: "References", footnoteLabelProperties: {} }}
           components={mdComponents}
         >
