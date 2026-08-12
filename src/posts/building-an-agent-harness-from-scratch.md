@@ -57,8 +57,7 @@ known_actions = {
 
 [ReAct](https://www.ibm.com/think/topics/react-agent) is a foundational yet simple framework that combines chain-of-thought reasoning with external tool use. In this framework, the LLM is first given instructions on format responses and available tools in the system prompt.
 
-<details>
-<summary>Show ReAct system prompt</summary>
+*ReAct system prompt*
 
 ```text
 You run in a loop of Thought, Action, PAUSE, Observation.
@@ -80,8 +79,6 @@ Evaluates a simple arithmetic expression.
 When finished, output:
 Answer: <answer>
 ```
-
-</details>
 
 When given a problem, the agent would first think through it, then suggest functions and inputs to use. The harness would parse the action, execute the tool, and return the results back to the agent through the conversation history. This is repeated until the agent knows the answer and returns it back to the user.
 
@@ -178,6 +175,8 @@ class Tool:
         return self.fn(**args)
 ```
 
+*Wrapping the functions as tools*
+
 ```python
 get_price_tool = Tool(
     name="get_price",
@@ -201,8 +200,7 @@ tools = {
 
 Since we are not using the ReAct framework anymore, we should change the system prompt so the model doesn't get confused.
 
-<details>
-<summary>Show updated system prompt</summary>
+*Updated system prompt*
 
 ```text
 You are a helpful assistant.
@@ -210,8 +208,6 @@ You are a helpful assistant.
 Use the provided tools when needed.
 Do not invent tool results.
 ```
-
-</details>
 
 We should also update the `Agent` class so it can add tool calls and results to the conversation history. Don't forget to update the harness too!
 
@@ -243,6 +239,8 @@ class Agent:
         )
         return response.choices[0].message
 ```
+
+*The updated harness loop*
 
 ```python
 import json
@@ -441,6 +439,8 @@ eval_cases = [
 ]
 ```
 
+*Running a single eval case*
+
 ```python
 def evaluate_case(case):
     reset_bookings()
@@ -472,6 +472,8 @@ def evaluate_case(case):
         "trace": tracer.events,
     }
 ```
+
+*Running all eval cases*
 
 ```python
 def run_evals(cases):
