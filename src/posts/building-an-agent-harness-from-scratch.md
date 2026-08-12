@@ -26,8 +26,8 @@ Since we are not using the ReAct framework anymore, we should change the system 
 
 We should also update the Agent class so it can add tool calls and results to the conversation history. Don't forget to update the harness too!
 
-## RunState
-We now have a working harness! However, it's not enough. What if you want to terminate the run after some turns or tool calls?  You would needTo fix this, the harness needs to keep track of relevant information during a run. I'll create a RunState class to keep track of the current turn, number of tools called, current status, stop reason, and final answer. A separate Tracer class will keep track of the events happened during the runs: before/after a model call, before/after a tool call, errors during a run, etc.
+## RunState and Tracing
+We now have a working harness! However, it's not enough. What if you want to terminate the run after a number of turns/tool calls, or diagnose when a run failed? You'd need to record relevant information during a run. RunState will be in charge of storing the current execution state, while Tracer keeps track of the events preceding that current state: before/after a model call, before/after a tool call, errors during a run, etc.
 
 If an error happened during a run, it would be hard to diagnose the error.
 
