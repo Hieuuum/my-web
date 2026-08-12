@@ -1,7 +1,6 @@
 ---
 title: "Building an agent harness from scratch"
 date: "2026-08-11"
-draft: "true"
 ---
 
 What is an agent harness? LLMs can't interact with an environment on its own. They only receive inputs and return outputs in text. Agents, on the other hand, are capable of making changes to its environment, such as editing code, booking flight tickets, etc. In layman's terms, an agent harness helps LLMs become agents. It is the runtime around the model that provides tools, state, termination, recovery, etc. for the model to act in an environment.
