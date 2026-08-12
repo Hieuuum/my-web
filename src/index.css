@@ -33,3 +33,12 @@ html.dark .shiki span {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
+
+/* light-plus's real editor background is pure white — identical to the page
+   background, so code blocks had no visible edge in light mode. Frame them
+   with the site's existing slate-50/slate-200 palette instead, overriding
+   Shiki's inline white (only `!important` beats an inline style). */
+html:not(.dark) pre.shiki {
+  background-color: #f8fafc !important;
+  border: 1px solid #e2e8f0;
+}
