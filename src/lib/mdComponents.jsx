@@ -1,5 +1,13 @@
+import { MermaidDiagram } from "./MermaidDiagram.jsx";
+
 // Shared react-markdown renderers so the admin preview and the published post
-// render identically. An image given a markdown *title* renders as a captioned
+// render identically.
+//
+// ```mermaid fenced blocks render as diagrams via remarkMermaid (which
+// rewrites them to a <mermaid-diagram> element before Shiki sees them) and
+// MermaidDiagram below.
+//
+// An image given a markdown *title* renders as a captioned
 // figure — the title text becomes the caption:
 //
 //   ![alt text](/images/photo.png "This shows up as the caption")
@@ -13,6 +21,7 @@
 // The hint is stripped from the rendered alt so accessibility text stays clean.
 // (A plain `<span>` wrapper is used instead of <figure> so it stays valid
 // inside the paragraph react-markdown wraps lone images in.)
+
 function parseSize(alt) {
   const m = /^(.*)\|(\d+)(?:x(\d+))?$/.exec(alt || "");
   if (!m) return { alt, style: undefined };
@@ -22,6 +31,7 @@ function parseSize(alt) {
 }
 
 export const mdComponents = {
+  "mermaid-diagram": MermaidDiagram,
   img({ node, title, alt, ...props }) {
     const { alt: cleanAlt, style } = parseSize(alt);
     const img = <img {...props} alt={cleanAlt} style={style} className="mx-auto block" />;

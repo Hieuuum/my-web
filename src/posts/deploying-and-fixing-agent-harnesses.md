@@ -6,6 +6,7 @@ draft: "true"
 
 I wanted to put my agent harnesses skills to the test, so I designed an automatic issue-fixing Github agent for Python repositories. Whenever an issue is tagged with `agent-fix`, the agent will be automatically deployed, and a pull request will be created when the issue is fixed. I used LangGraph to design the agent harness. Below is a graph of how the agent operates.
 
+```mermaid
 flowchart TD
     A[GitHub webhook] --> B[Clone / Setup]
     B --> C[Reproduce failure]
@@ -28,6 +29,7 @@ flowchart TD
     J -->|cannot continue| K
 
     I --> L[End]
+```
 
 I'll share some roadblocks I stumbled on while deploying this agent harness, how I resolved them, and the underlying principles for fixing them in the future.
 

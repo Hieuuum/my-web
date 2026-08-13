@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
+import { remarkMermaid } from "../../lib/remarkMermaid";
 import { api, ApiError } from "../api";
 import { useUndoHistory } from "../useUndoHistory";
 import { mdComponents } from "../../lib/mdComponents.jsx";
@@ -105,7 +106,7 @@ function Preview({ content }) {
   return (
     <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkMermaid]}
         rehypePlugins={
           highlighter
             ? [[rehypeShikiFromHighlighter, highlighter, { themes: shikiThemes, fallbackLanguage: "text" }]]

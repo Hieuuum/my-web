@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
+import { remarkMermaid } from "../lib/remarkMermaid";
 import { getPost } from "../lib/posts";
 import { mdComponents } from "../lib/mdComponents.jsx";
 import { shikiThemes, useShikiHighlighter } from "../lib/shiki";
@@ -67,7 +68,7 @@ export default function BlogPost() {
       </header>
       <div className="prose prose-slate dark:prose-invert max-w-none font-serif prose-headings:font-sfpro prose-code:font-mono prose-pre:font-mono">
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
+          remarkPlugins={[remarkGfm, remarkMermaid]}
           rehypePlugins={
             highlighter
               ? [[rehypeShikiFromHighlighter, highlighter, { themes: shikiThemes, fallbackLanguage: "text" }]]
