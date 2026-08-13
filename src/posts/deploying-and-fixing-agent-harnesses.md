@@ -38,6 +38,8 @@ The agent is also only allowed to write a file after it has read it to prevent b
 
 When the agent receives an issue, not all test cases would have passed. The verification system would ignore the unrelated failing ones, ensure that the targeted failed tests passed, and reject changes that failed previously passed ones.
 
-## Failures
+## Fixing failures
+The core philosophy to fixing failures effectively is to isolate each components and verify the smallest ones first. I'll demosntrate this through some examples below.
+
 ### Path traversal
-While designing this
+The agent works in a sandboxed environment, so it shouldn't be able to escape using path traversal. Running the verification system on tool use involving path traversal sometimes returned errors because the file wasn't found or permission denied. When I saw this error, I thought maybe there was something wrong with the agent, tool use, or the normalized function file path. I ran the normalized function, and turns out it converted files paths from `../outside.txt` to `outside.txt`, indicating this is where the error happened. Looking into this, it seems I wanted to strip the leading `./` in a file path. However, I used `.lstrip('./')`, which strips the 
