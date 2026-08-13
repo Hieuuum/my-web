@@ -45,4 +45,4 @@ The core philosophy to fixing failures effectively is to isolate each components
 The agent works in a sandboxed environment, so it shouldn't be able to escape using path traversal. Running the verification system on tool use involving path traversal sometimes returned errors because the file wasn't found or permission denied. When I saw this error, I thought maybe there was something wrong with the agent, tool use, or the normalized function file path. I ran the normalized function, and turns out this is where the error happened. Looking into this, it seems I wanted to remove the literal prefix `./`. However, I used `.lstrip('./')`, which strips any leading `.` or `/` characters, turning `../outside.txt` to `outside.txt`. After fixing this bug, all file paths passes as expected.
 
 ### Correct fix, wrong graph path
-When the agent
+When the agent produced the correct fix that passed all of the test cases, the verification stage sent the agent to the repair path the fixes instead of creating the pr issue.
