@@ -6,7 +6,7 @@ draft: "true"
 
 I wanted to put my agent harnesses skills to the test, so I designed an automatic issue-fixing Github agent for Python repositories. Whenever an issue is tagged with `agent-fix`, the agent will be automatically deployed, and a pull request will be created when the issue is fixed. I used LangGraph to design the agent harness. Below is a graph of how the agent operates.
 
-```flowchart TD
+flowchart TD
     A[GitHub webhook] --> B[Clone / Setup]
     B --> C[Reproduce failure]
     C --> D[Code Agent]
@@ -27,7 +27,7 @@ I wanted to put my agent harnesses skills to the test, so I designed an automati
     H -->|hard failure / budget exhausted| K[Terminate]
     J -->|cannot continue| K
 
-    I --> L[End]```
+    I --> L[End]
 
 I'll share some roadblocks I stumbled on while deploying this agent harness, how I resolved them, and the underlying principles for fixing them in the future.
 
@@ -42,4 +42,7 @@ When the agent receives an issue, not all test cases would have passed. The veri
 The core philosophy to fixing failures effectively is to isolate each components and verify the smallest ones first. I'll demosntrate this through some examples below.
 
 ### Path traversal
-The agent works in a sandboxed environment, so it shouldn't be able to escape using path traversal. Running the verification system on tool use involving path traversal sometimes returned errors because the file wasn't found or permission denied. When I saw this error, I thought maybe there was something wrong with the agent, tool use, or the normalized function file path. I ran the normalized function, and turns out it converted files paths from `../outside.txt` to `outside.txt`, indicating this is where the error happened. Looking into this, it seems I wanted to strip the leading `./` in a file path. However, I used `.lstrip('./')`, which strips the 
+The agent works in a sandboxed environment, so it shouldn't be able to escape using path traversal. Running the verification system on tool use involving path traversal sometimes returned errors because the file wasn't found or permission denied. When I saw this error, I thought maybe there was something wrong with the agent, tool use, or the normalized function file path. I ran the normalized function, and turns out this is where the error happened. Looking into this, it seems I wanted to remove the literal prefix `./`. However, I used `.lstrip('./')`, which strips any leading `.` or `/` characters, turning `../outside.txt` to `outside.txt`. After fixing this bug, all file paths passes as expected.
+
+### Correct fix, wrong graph path
+When the agent
