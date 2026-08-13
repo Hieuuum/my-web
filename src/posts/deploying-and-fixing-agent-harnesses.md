@@ -1,7 +1,6 @@
 ---
 title: "Deploying and fixing agent harnesses"
 date: "2026-08-13"
-draft: "true"
 ---
 
 I wanted to put my agent harnesses skills to the test, so I designed an automatic issue-fixing Github agent for Python repositories. Whenever an issue is tagged with `agent-fix`, the agent will be automatically deployed, and a pull request will be created when the issue is fixed. I used LangGraph to design the agent harness. Below is a graph of how the agent operates.
