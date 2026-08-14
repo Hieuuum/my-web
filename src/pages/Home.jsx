@@ -32,8 +32,7 @@ export default function Home() {
             </h1>
             <div className="space-y-4 text-slate-700 dark:text-zinc-300 leading-relaxed">
               <p>
-                Undergraduate at Union College studying Computer Science and
-                Mathematics. I&apos;m{" "}
+                Undergrad at Union studying CS and Math. I&apos;m{" "}
                 <Link
                   to="/blog/building-an-agent-harness-from-scratch"
                   className="text-slate-900 dark:text-zinc-100 underline"
