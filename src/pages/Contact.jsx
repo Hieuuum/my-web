@@ -1,8 +1,6 @@
 const links = [
   { label: "Email", value: "hieu.vm.nguyen@gmail.com", href: "mailto:hieu.vm.nguyen@gmail.com" },
   { label: "LinkedIn", value: "linkedin.com/in/mhieuuu", href: "https://www.linkedin.com/in/mhieuuu/", external: true },
-  { label: "Resume", value: "One-page PDF", href: "/resume.pdf", external: true },
-  { label: "Academic CV", value: "Full CV PDF", href: "/cv.pdf", external: true },
   { label: "GitHub", value: "github.com/Hieuuum", href: "https://github.com/Hieuuum", external: true },
 ];
 

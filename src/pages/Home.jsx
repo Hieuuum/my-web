@@ -6,8 +6,6 @@ const aboutLinks = [
   { label: "Email", href: "mailto:hieu.vm.nguyen@gmail.com" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/mhieuuu/", external: true },
   { label: "Substack", href: "https://substack.com/@mhieuuu/posts", external: true },
-  { label: "Resume", href: "/resume.pdf", external: true },
-  { label: "CV", href: "/cv.pdf", external: true },
   { label: "GitHub", href: "https://github.com/Hieuuum", external: true },
 ];
 
