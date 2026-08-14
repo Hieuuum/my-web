@@ -71,7 +71,8 @@ export default function Home() {
                   className="text-slate-900 dark:text-zinc-100 underline"
                 >
                   paper
-                </a>.
+                </a>. I&apos;m also building, deploying, and fixing agent
+                harnesses.
               </p>
             </div>
             <div className="flex gap-4 mt-8">
