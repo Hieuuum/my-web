@@ -33,8 +33,7 @@ export default function Home() {
             <div className="space-y-4 text-slate-700 dark:text-zinc-300 leading-relaxed">
               <p>
                 Undergraduate at Union College studying Computer Science and
-                Mathematics. I&apos;m interested in AI safety, making current AI
-                systems more aligned. I&apos;m{" "}
+                Mathematics. I&apos;m interested in AI safety. I&apos;m{" "}
                 <Link
                   to="/blog/building-an-agent-harness-from-scratch"
                   className="text-slate-900 dark:text-zinc-100 underline"
@@ -48,7 +47,8 @@ export default function Home() {
                 >
                   deploying, and fixing
                 </Link>{" "}
-                agent harnesses. Currently doing research at{" "}
+                agent harnesses to make current AI systems more aligned.
+                Currently doing research at{" "}
                 <a
                   href="https://caish.org/mars"
                   target="_blank"
