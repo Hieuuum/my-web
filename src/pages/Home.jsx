@@ -34,7 +34,21 @@ export default function Home() {
               <p>
                 Undergraduate at Union College studying Computer Science and
                 Mathematics. I&apos;m interested in AI safety, making current AI
-                systems more aligned. Currently doing research at{" "}
+                systems more aligned. I&apos;m{" "}
+                <Link
+                  to="/blog/building-an-agent-harness-from-scratch"
+                  className="text-slate-900 dark:text-zinc-100 underline"
+                >
+                  building
+                </Link>
+                ,{" "}
+                <Link
+                  to="/blog/deploying-and-fixing-agent-harnesses"
+                  className="text-slate-900 dark:text-zinc-100 underline"
+                >
+                  deploying, and fixing
+                </Link>{" "}
+                agent harnesses. Currently doing research at{" "}
                 <a
                   href="https://caish.org/mars"
                   target="_blank"
@@ -71,8 +85,7 @@ export default function Home() {
                   className="text-slate-900 dark:text-zinc-100 underline"
                 >
                   paper
-                </a>. I&apos;m also building, deploying, and fixing agent
-                harnesses.
+                </a>.
               </p>
             </div>
             <div className="flex gap-4 mt-8">
